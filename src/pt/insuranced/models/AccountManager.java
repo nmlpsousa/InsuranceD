@@ -14,6 +14,10 @@ public class AccountManager extends AbstractUser {
         super(id, username, password, personalIdentification, oldPasswords, lastPasswordChangeDate, userType, userStatus);
         this.employeeNo = employeeNo;
     }
+    
+    public int getEmployeeNo() {
+        return this.employeeNo;
+    }
 
     public static final class Builder {
         private int id;
