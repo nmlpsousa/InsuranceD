@@ -3,60 +3,72 @@ package pt.insuranced.models;
 import pt.insuranced.sdk.enums.PaymentStatusEnum;
 
 public class Payment {
-	private int id;
-	
-	private int paymentNo;
-	
-	private Coverage coverage;
-	
-	// TODO possible improvement, having its own structure in the DB
-	private String payee;
-	
-	private Double ammount;
-	
-	private PaymentStatusEnum status;
+    private int id;
 
-	public int getPaymentNo() {
-		return paymentNo;
-	}
+    private int paymentNo;
 
-	public void setPaymentNo(int paymentNo) {
-		this.paymentNo = paymentNo;
-	}
+    private Coverage coverage;
 
-	public Coverage getCoverage() {
-		return coverage;
-	}
+    // TODO possible improvement, having its own structure in the DB
+    private String payee;
 
-	public void setCoverage(Coverage coverage) {
-		this.coverage = coverage;
-	}
+    private Double ammount;
 
-	public int getId() {
-		return id;
-	}
+    private PaymentStatusEnum status;
 
-	public String getPayee() {
-		return payee;
-	}
+    public Payment() {
+    }
 
-	public void setPayee(String payee) {
-		this.payee = payee;
-	}
+    public Payment(int id, int paymentNo, Coverage coverage, String payee, Double ammount, PaymentStatusEnum status) {
+        this.id = id;
+        this.paymentNo = paymentNo;
+        this.coverage = coverage;
+        this.payee = payee;
+        this.ammount = ammount;
+        this.status = status;
+    }
 
-	public Double getAmmount() {
-		return ammount;
-	}
+    public int getPaymentNo() {
+        return this.paymentNo;
+    }
 
-	public void setAmmount(Double ammount) {
-		this.ammount = ammount;
-	}
+    public void setPaymentNo(int paymentNo) {
+        this.paymentNo = paymentNo;
+    }
 
-	public PaymentStatusEnum getStatus() {
-		return status;
-	}
+    public Coverage getCoverage() {
+        return this.coverage;
+    }
 
-	public void setStatus(PaymentStatusEnum status) {
-		this.status = status;
-	}
+    public void setCoverage(Coverage coverage) {
+        this.coverage = coverage;
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
+    public String getPayee() {
+        return this.payee;
+    }
+
+    public void setPayee(String payee) {
+        this.payee = payee;
+    }
+
+    public Double getAmmount() {
+        return this.ammount;
+    }
+
+    public void setAmmount(Double ammount) {
+        this.ammount = ammount;
+    }
+
+    public PaymentStatusEnum getStatus() {
+        return this.status;
+    }
+
+    public void setStatus(PaymentStatusEnum status) {
+        this.status = status;
+    }
 }

@@ -1,63 +1,75 @@
 package pt.insuranced.models;
 
-import java.time.LocalDate;
-
 import pt.insuranced.sdk.enums.ClaimStatusEnum;
 
+import java.time.LocalDate;
+
 public class Claim {
-	private int id;
-	
-	private int claimNo;
-	
-	private String description;
-	
-	private LocalDate incidentDate;
-	
-	private ClaimStatusEnum status;
-	
-	private ReserveLine reserveLine;
+    private int id;
 
-	public int getClaimNo() {
-		return claimNo;
-	}
+    private int claimNo;
 
-	public void setClaimNo(int claimNo) {
-		this.claimNo = claimNo;
-	}
+    private String description;
 
-	public String getDescription() {
-		return description;
-	}
+    private LocalDate incidentDate;
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    private ClaimStatusEnum status;
 
-	public LocalDate getIncidentDate() {
-		return incidentDate;
-	}
+    private ReserveLine reserveLine;
 
-	public void setIncidentDate(LocalDate incidentDate) {
-		this.incidentDate = incidentDate;
-	}
+    public Claim() {
+    }
 
-	public ClaimStatusEnum getStatus() {
-		return status;
-	}
+    public Claim(int id, int claimNo, String description, LocalDate incidentDate, ClaimStatusEnum status, ReserveLine reserveLine) {
+        this.id = id;
+        this.claimNo = claimNo;
+        this.description = description;
+        this.incidentDate = incidentDate;
+        this.status = status;
+        this.reserveLine = reserveLine;
+    }
 
-	public void setStatus(ClaimStatusEnum status) {
-		this.status = status;
-	}
+    public int getClaimNo() {
+        return this.claimNo;
+    }
 
-	public ReserveLine getReserveLine() {
-		return reserveLine;
-	}
+    public void setClaimNo(int claimNo) {
+        this.claimNo = claimNo;
+    }
 
-	public void setReserveLine(ReserveLine reserveLine) {
-		this.reserveLine = reserveLine;
-	}
+    public String getDescription() {
+        return this.description;
+    }
 
-	public int getId() {
-		return id;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocalDate getIncidentDate() {
+        return this.incidentDate;
+    }
+
+    public void setIncidentDate(LocalDate incidentDate) {
+        this.incidentDate = incidentDate;
+    }
+
+    public ClaimStatusEnum getStatus() {
+        return this.status;
+    }
+
+    public void setStatus(ClaimStatusEnum status) {
+        this.status = status;
+    }
+
+    public ReserveLine getReserveLine() {
+        return this.reserveLine;
+    }
+
+    public void setReserveLine(ReserveLine reserveLine) {
+        this.reserveLine = reserveLine;
+    }
+
+    public int getId() {
+        return this.id;
+    }
 }

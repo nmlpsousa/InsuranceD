@@ -1,49 +1,60 @@
 package pt.insuranced.models;
 
 public class Coverage {
-	private int id;
-	
-	private int coverageCode;
-	
-	private Double limit;
-	
-	private Double premium;
-	
-	private String description;
+    private int id;
 
-	public int getCoverageCode() {
-		return coverageCode;
-	}
+    private int coverageCode;
 
-	public void setCoverageCode(int coverageCode) {
-		this.coverageCode = coverageCode;
-	}
+    private Double limit;
 
-	public Double getLimit() {
-		return limit;
-	}
+    private Double premium;
 
-	public void setLimit(Double limit) {
-		this.limit = limit;
-	}
+    private String description;
 
-	public Double getPremium() {
-		return premium;
-	}
+    public Coverage() {
+    }
 
-	public void setPremium(Double premium) {
-		this.premium = premium;
-	}
+    public Coverage(int id, int coverageCode, Double limit, Double premium, String description) {
+        this.id = id;
+        this.coverageCode = coverageCode;
+        this.limit = limit;
+        this.premium = premium;
+        this.description = description;
+    }
 
-	public String getDescription() {
-		return description;
-	}
+    public int getCoverageCode() {
+        return this.coverageCode;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setCoverageCode(int coverageCode) {
+        this.coverageCode = coverageCode;
+    }
 
-	public int getId() {
-		return id;
-	}
+    public Double getLimit() {
+        return this.limit;
+    }
+
+    public void setLimit(Double limit) {
+        this.limit = limit;
+    }
+
+    public Double getPremium() {
+        return this.premium;
+    }
+
+    public void setPremium(Double premium) {
+        this.premium = premium;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getId() {
+        return this.id;
+    }
 }

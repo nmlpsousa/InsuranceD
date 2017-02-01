@@ -1,39 +1,46 @@
 package pt.insuranced.models;
 
 public class PhoneNumber {
-	private String id;
-	
-	private String prefix;
-	
-	private int number;
-	
-	
-	public String getPrefix() {
-		return prefix;
-	}
+    private String id;
 
-	public void setPrefix(String prefix) {
-		this.prefix = prefix;
-	}
+    private String prefix;
 
-	public int getNumber() {
-		return number;
-	}
+    private int number;
 
-	public void setNumber(int number) {
-		this.number = number;
-	}
+    public PhoneNumber() {
+    }
 
-	public String getId() {
-		return id;
-	}
+    public PhoneNumber(String id, String prefix, int number) {
+        this.id = id;
+        this.prefix = prefix;
+        this.number = number;
+    }
 
-	@Override
-	public String toString() {
-		return new StringBuilder(prefix)
-				.append(number)
-				.toString();
-	}
-	
+    public String getPrefix() {
+        return this.prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+
+    public int getNumber() {
+        return this.number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    public String getId() {
+        return this.id;
+    }
+
+    @Override
+    public String toString() {
+        return new StringBuilder(this.prefix)
+                .append(this.number)
+                .toString();
+    }
 
 }

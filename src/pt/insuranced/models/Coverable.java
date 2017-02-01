@@ -3,50 +3,61 @@ package pt.insuranced.models;
 import java.util.List;
 
 public class Coverable {
-	
-	private int id;
 
-	private int coverableNo;
-	
-	private String description;
-	
-	private List<Claim> claimList;
-	
-	private List<Coverage> coverageList;
+    private int id;
 
-	public int getCoverableNo() {
-		return coverableNo;
-	}
+    private int coverableNo;
 
-	public void setCoverableNo(int coverableNo) {
-		this.coverableNo = coverableNo;
-	}
+    private String description;
 
-	public String getDescription() {
-		return description;
-	}
+    private List<Claim> claimList;
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    private List<Coverage> coverageList;
 
-	public List<Claim> getClaimList() {
-		return claimList;
-	}
+    public Coverable() {
+    }
 
-	public void setClaimList(List<Claim> claimList) {
-		this.claimList = claimList;
-	}
+    public Coverable(int id, int coverableNo, String description, List<Claim> claimList, List<Coverage> coverageList) {
+        this.id = id;
+        this.coverableNo = coverableNo;
+        this.description = description;
+        this.claimList = claimList;
+        this.coverageList = coverageList;
+    }
 
-	public List<Coverage> getCoverageList() {
-		return coverageList;
-	}
+    public int getCoverableNo() {
+        return this.coverableNo;
+    }
 
-	public void setCoverageList(List<Coverage> coverageList) {
-		this.coverageList = coverageList;
-	}
+    public void setCoverableNo(int coverableNo) {
+        this.coverableNo = coverableNo;
+    }
 
-	public int getId() {
-		return id;
-	}
+    public String getDescription() {
+        return this.description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public List<Claim> getClaimList() {
+        return this.claimList;
+    }
+
+    public void setClaimList(List<Claim> claimList) {
+        this.claimList = claimList;
+    }
+
+    public List<Coverage> getCoverageList() {
+        return this.coverageList;
+    }
+
+    public void setCoverageList(List<Coverage> coverageList) {
+        this.coverageList = coverageList;
+    }
+
+    public int getId() {
+        return this.id;
+    }
 }

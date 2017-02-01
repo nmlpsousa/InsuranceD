@@ -4,65 +4,78 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class Policy {
-	private int id;
-	
-	private int policyNo;
-	
-	private LocalDate startDate;
-	
-	private LocalDate endDate;
-	
-	private Double premium;
-	
-	private List<Coverable> coverableList;
-	
-	private List<Coverage> coverage;
+    private int id;
 
-	public int getPolicyNo() {
-		return policyNo;
-	}
+    private int policyNo;
 
-	public LocalDate getStartDate() {
-		return startDate;
-	}
+    private LocalDate startDate;
 
-	public void setStartDate(LocalDate startDate) {
-		this.startDate = startDate;
-	}
+    private LocalDate endDate;
 
-	public LocalDate getEndDate() {
-		return endDate;
-	}
+    private Double premium;
 
-	public void setEndDate(LocalDate endDate) {
-		this.endDate = endDate;
-	}
+    private List<Coverable> coverableList;
 
-	public Double getPremium() {
-		return premium;
-	}
+    private List<Coverage> coverage;
 
-	public void setPremium(Double premium) {
-		this.premium = premium;
-	}
+    public Policy() {
+    }
 
-	public List<Coverable> getCoverableList() {
-		return coverableList;
-	}
+    public Policy(int id, int policyNo, LocalDate startDate, LocalDate endDate, Double premium, List<Coverable> coverableList, List<Coverage> coverage) {
+        this.id = id;
+        this.policyNo = policyNo;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.premium = premium;
+        this.coverableList = coverableList;
+        this.coverage = coverage;
+    }
 
-	public void setCoverableList(List<Coverable> coverableList) {
-		this.coverableList = coverableList;
-	}
+    public int getPolicyNo() {
+        return this.policyNo;
+    }
 
-	public List<Coverage> getCoverage() {
-		return coverage;
-	}
+    public LocalDate getStartDate() {
+        return this.startDate;
+    }
 
-	public void setCoverage(List<Coverage> coverage) {
-		this.coverage = coverage;
-	}
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
 
-	public int getId() {
-		return id;
-	}
+    public LocalDate getEndDate() {
+        return this.endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public Double getPremium() {
+        return this.premium;
+    }
+
+    public void setPremium(Double premium) {
+        this.premium = premium;
+    }
+
+    public List<Coverable> getCoverableList() {
+        return this.coverableList;
+    }
+
+    public void setCoverableList(List<Coverable> coverableList) {
+        this.coverableList = coverableList;
+    }
+
+    public List<Coverage> getCoverage() {
+        return this.coverage;
+    }
+
+    public void setCoverage(List<Coverage> coverage) {
+        this.coverage = coverage;
+    }
+
+    public int getId() {
+        return this.id;
+    }
 }
