@@ -104,4 +104,77 @@ public class PersonalIdentification {
     public int getId() {
         return this.id;
     }
+
+    public static final class Builder {
+        private int id;
+
+        private String firstName;
+
+        private String lastName;
+
+        private LocalDate dateOfBirth;
+
+        private PhoneNumber phoneNumber;
+
+        private Address address;
+
+        private String email;
+
+        private String identificationNumber;
+
+        private String fiscalNumber;
+
+        private Builder(int id) {
+            this.id = id;
+        }
+
+        public static Builder newBuilder(int id) {
+            return new Builder(id);
+        }
+
+        public Builder setFirstName(String firstName) {
+            this.firstName = firstName;
+            return this;
+        }
+
+        public Builder setLastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
+
+        public Builder setDateOfBirth(LocalDate dateOfBirth) {
+            this.dateOfBirth = dateOfBirth;
+            return this;
+        }
+
+        public Builder setPhoneNumber(PhoneNumber phoneNumber) {
+            this.phoneNumber = phoneNumber;
+            return this;
+        }
+
+        public Builder setAddress(Address address) {
+            this.address = address;
+            return this;
+        }
+
+        public Builder setEmail(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder setIdentificationNumber(String identificationNumber) {
+            this.identificationNumber = identificationNumber;
+            return this;
+        }
+
+        public Builder setFiscalNumber(String fiscalNumber) {
+            this.fiscalNumber = fiscalNumber;
+            return this;
+        }
+
+        public PersonalIdentification build() {
+            return new PersonalIdentification(this.id, this.firstName, this.lastName, this.dateOfBirth, this.phoneNumber, this.address, this.email, this.identificationNumber,
+                    this.fiscalNumber);
+        }
+    }
 }
