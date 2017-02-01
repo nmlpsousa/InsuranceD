@@ -6,7 +6,7 @@ import pt.insuranced.sdk.enums.UserTypeEnum;
 import java.time.LocalDate;
 import java.util.List;
 
-public class User {
+public abstract class AbstractUser {
     private int id;
 
     private String username;
@@ -23,10 +23,10 @@ public class User {
 
     private UserStatusEnum userStatus;
 
-    public User() {
+    protected AbstractUser() {
     }
 
-    public User(int id, String username, Password password, PersonalIdentification personalIdentification, List<Password> oldPasswords, LocalDate lastPasswordChangeDate,
+    protected AbstractUser(int id, String username, Password password, PersonalIdentification personalIdentification, List<Password> oldPasswords, LocalDate lastPasswordChangeDate,
             UserTypeEnum userType, UserStatusEnum userStatus) {
         this.id = id;
         this.username = username;

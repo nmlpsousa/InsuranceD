@@ -6,7 +6,7 @@ import pt.insuranced.sdk.enums.UserTypeEnum;
 import java.time.LocalDate;
 import java.util.List;
 
-public class AccountManager extends User {
+public class AccountManager extends AbstractUser {
     private int employeeNo;
 
     public AccountManager(int id, String username, Password password, PersonalIdentification personalIdentification, List<Password> oldPasswords,
