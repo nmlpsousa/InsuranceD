@@ -1,7 +1,10 @@
 package pt.insuranced.sdk.exceptions;
 
 public class InsuranceDException extends Exception {
+    private static final long serialVersionUID = 1327752485427358673L;
+
     public InsuranceDException() {
+        super();
     }
 
     public InsuranceDException(String message) {
