@@ -3,59 +3,71 @@ package pt.insuranced.models;
 import pt.insuranced.sdk.enums.CountryEnum;
 
 public class Address {
-	private int id;
-	
-	private String addressLine1;
-	
-	private String addressLine2;
-	
-	private String city;
-	
-	private String postalCode;
-	
-	private CountryEnum country;
+    private int id;
 
-	public String getAddressLine1() {
-		return addressLine1;
-	}
+    private String addressLine1;
 
-	public void setAddressLine1(String addressLine1) {
-		this.addressLine1 = addressLine1;
-	}
+    private String addressLine2;
 
-	public String getAddressLine2() {
-		return addressLine2;
-	}
+    private String city;
 
-	public void setAddressLine2(String addressLine2) {
-		this.addressLine2 = addressLine2;
-	}
+    private String postalCode;
 
-	public String getCity() {
-		return city;
-	}
+    private CountryEnum country;
 
-	public void setCity(String city) {
-		this.city = city;
-	}
+    public Address() {
+    }
 
-	public String getPostalCode() {
-		return postalCode;
-	}
+    public Address(int id, String addressLine1, String addressLine2, String city, String postalCode, CountryEnum country) {
+        this.id = id;
+        this.addressLine1 = addressLine1;
+        this.addressLine2 = addressLine2;
+        this.city = city;
+        this.postalCode = postalCode;
+        this.country = country;
+    }
 
-	public void setPostalCode(String postalCode) {
-		this.postalCode = postalCode;
-	}
+    public String getAddressLine1() {
+        return this.addressLine1;
+    }
 
-	public CountryEnum getCountry() {
-		return country;
-	}
+    public void setAddressLine1(String addressLine1) {
+        this.addressLine1 = addressLine1;
+    }
 
-	public void setCountry(CountryEnum country) {
-		this.country = country;
-	}
+    public String getAddressLine2() {
+        return this.addressLine2;
+    }
 
-	public int getId() {
-		return id;
-	}
+    public void setAddressLine2(String addressLine2) {
+        this.addressLine2 = addressLine2;
+    }
+
+    public String getCity() {
+        return this.city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getPostalCode() {
+        return this.postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public CountryEnum getCountry() {
+        return this.country;
+    }
+
+    public void setCountry(CountryEnum country) {
+        this.country = country;
+    }
+
+    public int getId() {
+        return this.id;
+    }
 }

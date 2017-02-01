@@ -6,27 +6,23 @@ import pt.insuranced.sdk.enums.UserTypeEnum;
 import java.time.LocalDate;
 import java.util.List;
 
-public class Client extends AbstractUser {
-    private List<Policy> policyList;
+public class AccountManager extends AbstractUser {
+    private int employeeNo;
 
-    public Client(int id, String username, Password password, PersonalIdentification personalIdentification, List<Password> oldPasswords, LocalDate lastPasswordChangeDate,
-            UserTypeEnum userType, UserStatusEnum userStatus, List<Policy> policyList) {
+    public AccountManager(int id, String username, Password password, PersonalIdentification personalIdentification, List<Password> oldPasswords,
+            LocalDate lastPasswordChangeDate, UserTypeEnum userType, UserStatusEnum userStatus, int employeeNo) {
         super(id, username, password, personalIdentification, oldPasswords, lastPasswordChangeDate, userType, userStatus);
-        this.policyList = policyList;
+        this.employeeNo = employeeNo;
     }
-
-    public List<Policy> getPolicyList() {
-        return this.policyList;
-    }
-
-    public void setPolicyList(List<Policy> policyList) {
-        this.policyList = policyList;
+    
+    public int getEmployeeNo() {
+        return this.employeeNo;
     }
 
     public static final class Builder {
         private int id;
 
-        private List<Policy> policyList;
+        private int employeeNo;
 
         private String username;
 
@@ -54,8 +50,8 @@ public class Client extends AbstractUser {
             return this;
         }
 
-        public Builder setPolicyList(List<Policy> policyList) {
-            this.policyList = policyList;
+        public Builder setEmployeeNo(int employeeNo) {
+            this.employeeNo = employeeNo;
             return this;
         }
 
@@ -94,9 +90,10 @@ public class Client extends AbstractUser {
             return this;
         }
 
-        public Client build() {
-            return new Client(this.id, this.username, this.password, this.personalIdentification, this.oldPasswords, this.lastPasswordChangeDate, this.userType, this.userStatus,
-                    this.policyList);
+        public AccountManager build() {
+            return new AccountManager(this.id, this.username, this.password, this.personalIdentification, this.oldPasswords, this.lastPasswordChangeDate, this.userType,
+                    this.userStatus,
+                    this.employeeNo);
         }
     }
 }

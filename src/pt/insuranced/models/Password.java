@@ -1,21 +1,28 @@
 package pt.insuranced.models;
 
 public class Password {
-	private int id;
-	
-	private String hashedPassword;
+    private int id;
 
-	public String getHashedPassword() {
-		return hashedPassword;
-	}
+    private String hashedPassword;
 
-	public void setHashedPassword(String hashedPassword) {
-		this.hashedPassword = hashedPassword;
-	}
+    public Password() {
+    }
 
-	public int getId() {
-		return id;
-	}
-	
-	
+    public Password(int id, String hashedPassword) {
+        this.id = id;
+        this.hashedPassword = hashedPassword;
+    }
+
+    public String getHashedPassword() {
+        return this.hashedPassword;
+    }
+
+    public void setHashedPassword(String hashedPassword) {
+        this.hashedPassword = hashedPassword;
+    }
+
+    public int getId() {
+        return this.id;
+    }
+
 }
