@@ -1,8 +1,8 @@
 package pt.insuranced.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.apache.commons.lang3.StringUtils;
 import pt.insuranced.models.AbstractUser;
 import pt.insuranced.models.Client;
 import pt.insuranced.persistence.dao.UserDaoImpl;
@@ -15,9 +15,16 @@ import java.util.function.Predicate;
 
 public class UserService {
     private static final ObjectMapper OBJECT_MAPPER;
+
+    private UserDao userDao;
+
     static {
         OBJECT_MAPPER = new ObjectMapper();
         OBJECT_MAPPER.registerModule(new JavaTimeModule());
+    }
+
+    public UserService() {
+        this.userDao = new UserDaoImpl();
     }
 
     public String getClientDetails(String jsonInput) throws InsuranceDException {
@@ -25,8 +32,7 @@ public class UserService {
             Client client = OBJECT_MAPPER.readValue(jsonInput, Client.class);
             int userId = client.getId();
 
-            UserDao userDao = new UserDaoImpl();
-            Optional<AbstractUser> retrievedUserOptional = userDao.get(userId);
+            Optional<AbstractUser> retrievedUserOptional = this.userDao.get(userId);
             if (!retrievedUserOptional.isPresent()) {
                 throw new InsuranceDException("The client does not exist.");
             }
@@ -41,18 +47,21 @@ public class UserService {
         }
     }
 
-    /*
     public String insertClient(String jsonInput) throws InsuranceDException {
         try {
             Client newClient = OBJECT_MAPPER.readValue(jsonInput, Client.class);
-
+            Boolean clientIsValid = isClientValid(newClient, client -> StringUtils.isNotEmpty(client.getUsername()) && client.getPassword() != null);
+            if (!clientIsValid) {
+                throw new InsuranceDException("The client is invalid.");
+            }
+            Client insertedClient = (Client) this.userDao.insert(newClient);
+            return OBJECT_MAPPER.writeValueAsString(insertedClient);
         } catch (IOException exception) {
-
+            throw new InsuranceDException("An error occurred while trying to insert the client.", exception);
         }
     }
-    */
 
-    private Boolean performValidations(Client client, Predicate<Client> predicate) {
+    private static Boolean isClientValid(Client client, Predicate<Client> predicate) {
         return predicate.test(client);
     }
 }
