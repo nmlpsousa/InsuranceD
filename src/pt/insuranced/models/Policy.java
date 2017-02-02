@@ -17,6 +17,8 @@ public class Policy {
     private List<Coverable> coverableList;
 
     private List<Coverage> coverage;
+    
+    private int userId;
 
     public Policy() {
     }
@@ -78,4 +80,12 @@ public class Policy {
     public int getId() {
         return this.id;
     }
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
 }
