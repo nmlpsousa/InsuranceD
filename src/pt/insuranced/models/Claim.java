@@ -16,6 +16,8 @@ public class Claim {
     private ClaimStatusEnum status;
 
     private ReserveLine reserveLine;
+    
+    private int coverableId;
 
     public Claim() {
     }
@@ -72,4 +74,12 @@ public class Claim {
     public int getId() {
         return this.id;
     }
+
+	public int getCoverableId() {
+		return coverableId;
+	}
+
+	public void setCoverableId(int coverableId) {
+		this.coverableId = coverableId;
+	}
 }

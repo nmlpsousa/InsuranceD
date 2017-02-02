@@ -13,6 +13,8 @@ public class Coverable {
     private List<Claim> claimList;
 
     private List<Coverage> coverageList;
+    
+    private int policyId;
 
     public Coverable() {
     }
@@ -60,4 +62,12 @@ public class Coverable {
     public int getId() {
         return this.id;
     }
+
+	public int getPolicyId() {
+		return policyId;
+	}
+
+	public void setPolicyId(int policyId) {
+		this.policyId = policyId;
+	}
 }
