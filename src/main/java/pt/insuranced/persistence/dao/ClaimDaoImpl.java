@@ -16,7 +16,6 @@ public class ClaimDaoImpl implements ClaimDao {
 
     @Override
     public Optional<Claim> get(int id) throws InsuranceDException {
-        // TODO Auto-generated method stub
         return null;
     }
 
