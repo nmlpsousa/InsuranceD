@@ -2,6 +2,7 @@ package pt.insuranced.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import mockit.Mock;
 import mockit.MockUp;
 import org.junit.Test;
@@ -58,7 +59,7 @@ public class UserServiceTest {
 
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.registerModule(new JSR310Module());
+            objectMapper.registerModule(new JavaTimeModule());
             String jsonInput = "{\"id\":\"0\"}";
             UserService userService = new UserService();
             String response = userService.getClientDetails(jsonInput);

@@ -2,6 +2,7 @@ package pt.insuranced.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import pt.insuranced.models.AbstractUser;
 import pt.insuranced.models.Client;
 import pt.insuranced.persistence.dao.UserDaoImpl;
@@ -14,7 +15,7 @@ import java.util.Optional;
 public class UserService {
     public String getClientDetails(String jsonInput) throws InsuranceDException {
         ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JSR310Module());
+        objectMapper.registerModule(new JavaTimeModule());
         try {
             Client client = objectMapper.readValue(jsonInput, Client.class);
             int userId = client.getId();
