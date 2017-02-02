@@ -14,19 +14,19 @@ public class ClaimDaoImpl implements ClaimDao {
         return new ArrayList<>(0);
     }
 
-	@Override
-	public Optional<Claim> get(int id) throws InsuranceDException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public Optional<Claim> get(int id) throws InsuranceDException {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public Claim insert(Claim object) throws InsuranceDException {
-		return object;
-	}
+    @Override
+    public Claim insert(Claim object) throws InsuranceDException {
+        return object;
+    }
 
-	@Override
-	public Claim update(Claim object) throws InsuranceDException {
-		return object;
-	}
+    @Override
+    public Claim update(Claim object) throws InsuranceDException {
+        return object;
+    }
 }

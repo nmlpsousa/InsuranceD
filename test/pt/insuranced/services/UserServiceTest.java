@@ -1,12 +1,9 @@
 package pt.insuranced.services;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 import mockit.Mock;
 import mockit.MockUp;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import pt.insuranced.models.AbstractUser;
 import pt.insuranced.models.Client;
@@ -25,10 +22,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 public class UserServiceTest {
-    @BeforeClass
-    public static void setUp() {
-        //new MockUserDaoImpl();
-    }
 
     @Test(expected = InsuranceDException.class)
     public void testGetClientDetailsNonExistent() throws InsuranceDException {

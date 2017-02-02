@@ -1,47 +1,45 @@
 package pt.insuranced.persistence.dao;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
 import pt.insuranced.models.AbstractUser;
 import pt.insuranced.persistence.dao.sdk.interfaces.UserDao;
 import pt.insuranced.sdk.exceptions.InsuranceDException;
 
-public class UserDaoImpl implements UserDao{
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
-	private static Map<Integer, AbstractUser> userMap = new HashMap<>();
-	
-	@Override
-	public AbstractUser insert(AbstractUser user) throws InsuranceDException {
-		
-		if (userMap.containsKey(user.getId())) {
-			throw new InsuranceDException("Cannot insert user. Duplicated keys.");
-		}
-		
-		userMap.put(user.getId(), user);
-		
-		return user;
-	}
+public class UserDaoImpl implements UserDao {
 
-	@Override
-	public Optional<AbstractUser> get(int userId) throws InsuranceDException {
-		
-		return Optional.ofNullable(userMap.get(userId));
-		
-	}
+    private static Map<Integer, AbstractUser> userMap = new HashMap<>();
 
-	@Override
-	public AbstractUser update(AbstractUser user) throws InsuranceDException {
-		
-		if (userMap.containsKey(user.getId())) {
-			userMap.put(user.getId(), user);
-			return user;
-		}
-		
-		throw new InsuranceDException("Trying to update a user that doesn't exist.");
-	}
+    @Override
+    public AbstractUser insert(AbstractUser user) throws InsuranceDException {
 
-	
-	
+        if (userMap.containsKey(user.getId())) {
+            throw new InsuranceDException("Cannot insert user. Duplicated keys.");
+        }
+
+        userMap.put(user.getId(), user);
+
+        return user;
+    }
+
+    @Override
+    public Optional<AbstractUser> get(int userId) throws InsuranceDException {
+
+        return Optional.ofNullable(userMap.get(userId));
+
+    }
+
+    @Override
+    public AbstractUser update(AbstractUser user) throws InsuranceDException {
+
+        if (userMap.containsKey(user.getId())) {
+            userMap.put(user.getId(), user);
+            return user;
+        }
+
+        throw new InsuranceDException("Trying to update a user that doesn't exist.");
+    }
+
 }

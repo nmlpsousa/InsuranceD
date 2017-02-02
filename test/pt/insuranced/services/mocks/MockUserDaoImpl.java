@@ -15,7 +15,7 @@ import java.util.Optional;
 public class MockUserDaoImpl extends MockUp<UserDaoImpl> {
     @Mock
     public Optional<AbstractUser> get(int userId) throws InsuranceDException {
-        AbstractUser user =  Client.Builder.newBuilder()
+        AbstractUser user = Client.Builder.newBuilder()
                 .setId(userId)
                 .setUsername("nuno")
                 .setPassword(new Password(0, "batata"))
