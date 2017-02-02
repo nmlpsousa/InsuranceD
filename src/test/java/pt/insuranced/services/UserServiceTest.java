@@ -1,19 +1,14 @@
 package pt.insuranced.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import mockit.Mock;
 import mockit.MockUp;
 import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import pt.insuranced.models.AbstractUser;
 import pt.insuranced.models.Client;
 import pt.insuranced.models.Password;
-import pt.insuranced.models.Policy;
-import pt.insuranced.persistence.dao.PolicyDaoImpl;
 import pt.insuranced.persistence.dao.UserDaoImpl;
 import pt.insuranced.sdk.enums.UserStatusEnum;
 import pt.insuranced.sdk.enums.UserTypeEnum;
@@ -24,11 +19,19 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 public class UserServiceTest {
     private static Client exampleClient;
+
+    private static final ObjectMapper OBJECT_MAPPER;
+
+    static {
+        OBJECT_MAPPER = new ObjectMapper();
+        OBJECT_MAPPER.registerModule(new JavaTimeModule());
+    }
 
     @Before
     public void setUp() {
@@ -68,12 +71,10 @@ public class UserServiceTest {
         };
 
         try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.registerModule(new JavaTimeModule());
             String jsonInput = "{\"id\":\"0\"}";
             UserService userService = new UserService();
             String response = userService.getClientDetails(jsonInput);
-            Client retrievedClient = objectMapper.readValue(response, Client.class);
+            Client retrievedClient = OBJECT_MAPPER.readValue(response, Client.class);
 
             assertEquals(0, retrievedClient.getId());
             assertNull(retrievedClient.getPassword());
@@ -83,7 +84,6 @@ public class UserServiceTest {
     }
 
     @Test
-    @Ignore
     public void testInsertNewClientSuccess() {
         new MockUp<UserDaoImpl>() {
             @Mock
@@ -92,9 +92,33 @@ public class UserServiceTest {
             }
         };
 
-        String jsonInput = "{\"username\":\"nmlpsousa\",\"personalIdentification\":null,\"oldPasswords\":null,\"lastPasswordChangeDate\":[2017,1,30],\"userType\":\"CLIENT\","
-                + "\"userStatus\":\"PENDING\",\"policyList\":null}";
+        try {
+            String jsonInput = "{\"username\":\"nmlpsousa\", \"password\":{\"id\": \"0\", \"hashedPassword\":\"batata\"},\"personalIdentification\":null,\"oldPasswords\":null,"
+                    + "\"lastPasswordChangeDate\":[2017,1,30],\"userType\":\"CLIENT\",\"userStatus\":\"PENDING\",\"policyList\":null}";
+            UserService userService = new UserService();
+            String response = userService.insertClient(jsonInput);
+            Client client = OBJECT_MAPPER.readValue(response, Client.class);
+
+            assertNotNull(client);
+        } catch (InsuranceDException | IOException exception) {
+            fail(exception.getMessage());
+        }
+    }
+
+    @Test(expected = InsuranceDException.class)
+    public void testInsertNewClientInvalid() throws InsuranceDException {
+        new MockUp<UserDaoImpl>() {
+            @Mock
+            public AbstractUser insert(AbstractUser user) throws InsuranceDException {
+                return exampleClient;
+            }
+        };
+
+        String jsonInput = "{\"username\":\"\", \"password\":{\"id\": \"0\", \"hashedPassword\":\"batata\"},\"personalIdentification\":null,\"oldPasswords\":null,"
+                + "\"lastPasswordChangeDate\":[2017,1,30],\"userType\":\"CLIENT\",\"userStatus\":\"PENDING\",\"policyList\":null}";
         UserService userService = new UserService();
-        String response;
+        String response = userService.insertClient(jsonInput);
+
+        fail("The insert call should have thrown an exception.");
     }
 }
