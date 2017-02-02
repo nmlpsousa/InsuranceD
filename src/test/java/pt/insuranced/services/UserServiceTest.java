@@ -1,14 +1,19 @@
 package pt.insuranced.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import mockit.Mock;
 import mockit.MockUp;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import pt.insuranced.models.AbstractUser;
 import pt.insuranced.models.Client;
 import pt.insuranced.models.Password;
+import pt.insuranced.models.Policy;
+import pt.insuranced.persistence.dao.PolicyDaoImpl;
 import pt.insuranced.persistence.dao.UserDaoImpl;
 import pt.insuranced.sdk.enums.UserStatusEnum;
 import pt.insuranced.sdk.enums.UserTypeEnum;
@@ -23,6 +28,19 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 public class UserServiceTest {
+    private static Client exampleClient;
+
+    @Before
+    public void setUp() {
+        exampleClient = Client.Builder.newBuilder()
+                .setId(0)
+                .setUsername("nmlpsousa")
+                .setPassword(new Password(0, "pass"))
+                .setLastPasswordChangeDate(LocalDate.of(2017, 1, 30))
+                .setUserStatus(UserStatusEnum.PENDING)
+                .setUserType(UserTypeEnum.CLIENT)
+                .build();
+    }
 
     @Test(expected = InsuranceDException.class)
     public void testGetClientDetailsNonExistent() throws InsuranceDException {
@@ -42,18 +60,10 @@ public class UserServiceTest {
 
     @Test
     public void testGetClientDetailsExistent() {
-        Client mockedClient = Client.Builder.newBuilder()
-                .setId(0)
-                .setUsername("nmlpsousa")
-                .setPassword(new Password(0, "pass"))
-                .setLastPasswordChangeDate(LocalDate.of(2017, 1, 30))
-                .setUserStatus(UserStatusEnum.PENDING)
-                .setUserType(UserTypeEnum.CLIENT)
-                .build();
         new MockUp<UserDaoImpl>() {
             @Mock
             public Optional<AbstractUser> get(int userId) {
-                return Optional.of(mockedClient);
+                return Optional.of(exampleClient);
             }
         };
 
@@ -70,5 +80,21 @@ public class UserServiceTest {
         } catch (InsuranceDException | IOException exception) {
             fail(exception.getMessage());
         }
+    }
+
+    @Test
+    @Ignore
+    public void testInsertNewClientSuccess() {
+        new MockUp<UserDaoImpl>() {
+            @Mock
+            public AbstractUser insert(AbstractUser user) throws InsuranceDException {
+                return exampleClient;
+            }
+        };
+
+        String jsonInput = "{\"username\":\"nmlpsousa\",\"personalIdentification\":null,\"oldPasswords\":null,\"lastPasswordChangeDate\":[2017,1,30],\"userType\":\"CLIENT\","
+                + "\"userStatus\":\"PENDING\",\"policyList\":null}";
+        UserService userService = new UserService();
+        String response;
     }
 }

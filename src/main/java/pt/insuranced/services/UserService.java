@@ -11,13 +11,18 @@ import pt.insuranced.sdk.exceptions.InsuranceDException;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public class UserService {
+    private static final ObjectMapper OBJECT_MAPPER;
+    static {
+        OBJECT_MAPPER = new ObjectMapper();
+        OBJECT_MAPPER.registerModule(new JavaTimeModule());
+    }
+
     public String getClientDetails(String jsonInput) throws InsuranceDException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
         try {
-            Client client = objectMapper.readValue(jsonInput, Client.class);
+            Client client = OBJECT_MAPPER.readValue(jsonInput, Client.class);
             int userId = client.getId();
 
             UserDao userDao = new UserDaoImpl();
@@ -30,9 +35,24 @@ public class UserService {
                 throw new InsuranceDException("The retrieved user is not of the Client type.");
             }
             Client clientWithDetails = (Client) retrievedUser;
-            return objectMapper.writeValueAsString(clientWithDetails);
+            return OBJECT_MAPPER.writeValueAsString(clientWithDetails);
         } catch (IOException e) {
             throw new InsuranceDException("An error occurred while trying to retrieve the client details.", e);
         }
+    }
+
+    /*
+    public String insertClient(String jsonInput) throws InsuranceDException {
+        try {
+            Client newClient = OBJECT_MAPPER.readValue(jsonInput, Client.class);
+
+        } catch (IOException exception) {
+
+        }
+    }
+    */
+
+    private Boolean performValidations(Client client, Predicate<Client> predicate) {
+        return predicate.test(client);
     }
 }
