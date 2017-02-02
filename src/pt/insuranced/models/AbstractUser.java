@@ -1,5 +1,7 @@
 package pt.insuranced.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import pt.insuranced.sdk.enums.UserStatusEnum;
 import pt.insuranced.sdk.enums.UserTypeEnum;
 
@@ -11,6 +13,7 @@ public abstract class AbstractUser {
 
     private String username;
 
+    @JsonIgnore
     private Password password;
 
     private PersonalIdentification personalIdentification;
@@ -46,10 +49,12 @@ public abstract class AbstractUser {
         this.username = username;
     }
 
+    @JsonIgnore
     public Password getPassword() {
         return this.password;
     }
 
+    @JsonProperty
     public void setPassword(Password password) {
         this.password = password;
     }

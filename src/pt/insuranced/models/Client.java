@@ -9,6 +9,10 @@ import java.util.List;
 public class Client extends AbstractUser {
     private List<Policy> policyList;
 
+    public Client() {
+        super();
+    }
+
     public Client(int id, String username, Password password, PersonalIdentification personalIdentification, List<Password> oldPasswords, LocalDate lastPasswordChangeDate,
             UserTypeEnum userType, UserStatusEnum userStatus, List<Policy> policyList) {
         super(id, username, password, personalIdentification, oldPasswords, lastPasswordChangeDate, userType, userStatus);
