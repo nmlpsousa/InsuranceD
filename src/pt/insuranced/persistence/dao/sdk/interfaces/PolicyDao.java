@@ -6,12 +6,6 @@ import pt.insuranced.sdk.exceptions.InsuranceDException;
 import java.util.List;
 import java.util.Optional;
 
-public interface PolicyDao {
-    Optional<Policy> getPolicy(int policyId) throws InsuranceDException;
-
-    Policy insertPolicy(int userId, Policy policy) throws InsuranceDException;
-
-    Policy updatePolicy(Policy policy) throws InsuranceDException;
-
+public interface PolicyDao extends GenericDao<Policy> {
     List<Policy> getPoliciesFromUser(int userId) throws InsuranceDException;
 }

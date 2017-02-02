@@ -14,12 +14,12 @@ public class PolicyDaoImpl implements PolicyDao {
     private static Map<Integer, Policy> policyMap = new HashMap<>(10);
 
     @Override
-    public Optional<Policy> getPolicy(int policyId) throws InsuranceDException {
+    public Optional<Policy> get(int policyId) throws InsuranceDException {
         return Optional.ofNullable(policyMap.get(policyId));
     }
 
     @Override
-    public Policy insertPolicy(int userId, Policy policy) throws InsuranceDException {
+    public Policy insert(Policy policy) throws InsuranceDException {
         if (policyMap.containsKey(policy.getId())) {
             throw new InsuranceDException("Unable to insert the policy: the key already exists.");
         }
@@ -29,7 +29,7 @@ public class PolicyDaoImpl implements PolicyDao {
     }
 
     @Override
-    public Policy updatePolicy(Policy policy) throws InsuranceDException {
+    public Policy update(Policy policy) throws InsuranceDException {
         if (!policyMap.containsKey(policy.getId())) {
             throw new InsuranceDException("Unable to update the policy: the policy does not exist.");
         }
