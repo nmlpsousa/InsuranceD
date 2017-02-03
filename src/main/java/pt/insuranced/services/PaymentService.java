@@ -39,7 +39,7 @@ public class PaymentService {
             Payment retrievedPayment = retrievedPaymentOptional.get();
             return OBJECT_MAPPER.writeValueAsString(retrievedPayment);
         } catch (IOException e) {
-            throw new InsuranceDException("An error occurred while trying to retrieve the client details.", e);
+            throw new InsuranceDException("An error occurred while trying to retrieve the payment details.", e);
         }
     }
     
