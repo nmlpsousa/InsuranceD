@@ -135,7 +135,7 @@ public class PolicyServiceTest {
 
         String jsonInput = "{\"id\":\"0\"}";
         PolicyService policyService = new PolicyService();
-        String response = policyService.getPolicyDetails(jsonInput);
+        policyService.getPolicyDetails(jsonInput);
 
         fail("The test should have thrown an InsuranceDException, because the policy did not exist.");
     }

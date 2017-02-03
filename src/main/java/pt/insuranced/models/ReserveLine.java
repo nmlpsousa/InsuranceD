@@ -1,7 +1,5 @@
 package pt.insuranced.models;
 
-import pt.insuranced.models.ReserveLine.Builder;
-
 public class ReserveLine {
 	private int id;
 

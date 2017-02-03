@@ -42,7 +42,7 @@ public class PaymentServiceTest {
 
         String jsonInput = "{\"id\":1,\"paymentNo\":1,\"coverage\":null,\"payee\":\"Gus\",\"ammount\":100.0,\"status\":\"CLOSED\"}";
         PaymentService paymentService = new PaymentService();
-        String response = paymentService.insertPayment(jsonInput);
+        paymentService.insertPayment(jsonInput);
 
         fail("The test should have thrown an exception, since the payment is invalid.");
     }

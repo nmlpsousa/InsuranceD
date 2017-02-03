@@ -3,6 +3,7 @@ package pt.insuranced.models;
 import pt.insuranced.sdk.enums.ClaimStatusEnum;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 
 public class Claim {
     private int id;
@@ -82,4 +83,17 @@ public class Claim {
     public void setCoverableId(int coverableId) {
         this.coverableId = coverableId;
     }
+    
+    public static Comparator<Claim> getCompByDate()
+    {   
+     Comparator<Claim> comp = new Comparator<Claim>(){
+         @Override
+         public int compare(Claim c1, Claim c2)
+         {
+             return c2.getIncidentDate().compareTo(c1.getIncidentDate());
+         }        
+     };
+     return comp;
+    }
+    
 }
