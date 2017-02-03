@@ -1,17 +1,16 @@
 package pt.insuranced.services;
 
-import java.io.IOException;
-import java.util.Optional;
-import java.util.function.Predicate;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import org.apache.commons.lang3.StringUtils;
 import pt.insuranced.models.Payment;
 import pt.insuranced.persistence.dao.PaymentDaoImpl;
 import pt.insuranced.persistence.dao.sdk.interfaces.PaymentDao;
+import pt.insuranced.sdk.enums.PaymentStatusEnum;
 import pt.insuranced.sdk.exceptions.InsuranceDException;
+
+import java.io.IOException;
+import java.util.Optional;
+import java.util.function.Predicate;
 
 public class PaymentService {
 	private static final ObjectMapper OBJECT_MAPPER;
@@ -48,10 +47,9 @@ public class PaymentService {
     	try {
     		Payment newPayment = OBJECT_MAPPER.readValue(jsonInput, Payment.class);
     		//TODO: Validate if payment is valid.
-    		Boolean paymentIsValid = isPaymentValid(newPayment, 
-    				                                payment -> StringUtils.isNotEmpty(payment.getPayee()) 
-    				                                && (payment.getAmmount() > 0));
-    		if (!paymentIsValid) {
+            Boolean paymentIsValid = isPaymentValid(newPayment, payment -> StringUtils.isNotEmpty(payment.getPayee()) && payment.getAmmount() > 0
+                    && PaymentStatusEnum.OPEN == payment.getStatus());
+            if (!paymentIsValid) {
                 throw new InsuranceDException("The payment is invalid.");
             }
     		Payment insertedPayment = this.paymentDao.insert(newPayment);
