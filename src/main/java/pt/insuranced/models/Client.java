@@ -6,23 +6,31 @@ import pt.insuranced.sdk.enums.UserTypeEnum;
 import java.time.LocalDate;
 import java.util.List;
 
-public class AccountManager extends AbstractUser {
-    private int employeeNo;
+public class Client extends AbstractUser {
+    private List<Policy> policyList;
 
-    public AccountManager(int id, String username, Password password, PersonalIdentification personalIdentification, List<Password> oldPasswords,
-            LocalDate lastPasswordChangeDate, UserTypeEnum userType, UserStatusEnum userStatus, int employeeNo) {
-        super(id, username, password, personalIdentification, oldPasswords, lastPasswordChangeDate, userType, userStatus);
-        this.employeeNo = employeeNo;
+    public Client() {
+        super();
     }
-    
-    public int getEmployeeNo() {
-        return this.employeeNo;
+
+    public Client(int id, String username, Password password, PersonalIdentification personalIdentification, List<Password> oldPasswords, LocalDate lastPasswordChangeDate,
+            UserTypeEnum userType, UserStatusEnum userStatus, List<Policy> policyList) {
+        super(id, username, password, personalIdentification, oldPasswords, lastPasswordChangeDate, userType, userStatus);
+        this.policyList = policyList;
+    }
+
+    public List<Policy> getPolicyList() {
+        return this.policyList;
+    }
+
+    public void setPolicyList(List<Policy> policyList) {
+        this.policyList = policyList;
     }
 
     public static final class Builder {
         private int id;
 
-        private int employeeNo;
+        private List<Policy> policyList;
 
         private String username;
 
@@ -50,8 +58,8 @@ public class AccountManager extends AbstractUser {
             return this;
         }
 
-        public Builder setEmployeeNo(int employeeNo) {
-            this.employeeNo = employeeNo;
+        public Builder setPolicyList(List<Policy> policyList) {
+            this.policyList = policyList;
             return this;
         }
 
@@ -90,10 +98,9 @@ public class AccountManager extends AbstractUser {
             return this;
         }
 
-        public AccountManager build() {
-            return new AccountManager(this.id, this.username, this.password, this.personalIdentification, this.oldPasswords, this.lastPasswordChangeDate, this.userType,
-                    this.userStatus,
-                    this.employeeNo);
+        public Client build() {
+            return new Client(this.id, this.username, this.password, this.personalIdentification, this.oldPasswords, this.lastPasswordChangeDate, this.userType, this.userStatus,
+                    this.policyList);
         }
     }
 }
