@@ -42,4 +42,9 @@ public class PolicyDaoImpl implements PolicyDao {
     public List<Policy> getPoliciesFromUser(int userId) throws InsuranceDException {
         return Collections.emptyList();
     }
+
+    @Override
+    public Optional<Policy> getExtendedPolicyInformation(int policyId) throws InsuranceDException {
+        return null;
+    }
 }

@@ -16,21 +16,21 @@ public class Policy {
 
     private List<Coverable> coverableList;
 
-    private List<Coverage> coverage;
+    private List<Coverage> coverageList;
 
     private int userId;
 
     public Policy() {
     }
 
-    public Policy(int id, int policyNo, LocalDate startDate, LocalDate endDate, Double premium, List<Coverable> coverableList, List<Coverage> coverage) {
+    public Policy(int id, int policyNo, LocalDate startDate, LocalDate endDate, Double premium, List<Coverable> coverableList, List<Coverage> coverageList) {
         this.id = id;
         this.policyNo = policyNo;
         this.startDate = startDate;
         this.endDate = endDate;
         this.premium = premium;
         this.coverableList = coverableList;
-        this.coverage = coverage;
+        this.coverageList = coverageList;
     }
 
     public int getPolicyNo() {
@@ -69,12 +69,12 @@ public class Policy {
         this.coverableList = coverableList;
     }
 
-    public List<Coverage> getCoverage() {
-        return this.coverage;
+    public List<Coverage> getCoverageList() {
+        return this.coverageList;
     }
 
-    public void setCoverage(List<Coverage> coverage) {
-        this.coverage = coverage;
+    public void setCoverageList(List<Coverage> coverageList) {
+        this.coverageList = coverageList;
     }
 
     public int getId() {
@@ -82,10 +82,79 @@ public class Policy {
     }
 
     public int getUserId() {
-        return userId;
+        return this.userId;
     }
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public static final class Builder {
+        private int id;
+
+        private int policyNo;
+
+        private LocalDate startDate;
+
+        private LocalDate endDate;
+
+        private Double premium;
+
+        private List<Coverable> coverableList;
+
+        private List<Coverage> coverageList;
+
+        private int userId;
+
+        private Builder() {
+        }
+
+        public static Builder newBuilder() {
+            return new Builder();
+        }
+
+        public Builder setId(int id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setPolicyNo(int policyNo) {
+            this.policyNo = policyNo;
+            return this;
+        }
+
+        public Builder setStartDate(LocalDate startDate) {
+            this.startDate = startDate;
+            return this;
+        }
+
+        public Builder setEndDate(LocalDate endDate) {
+            this.endDate = endDate;
+            return this;
+        }
+
+        public Builder setPremium(Double premium) {
+            this.premium = premium;
+            return this;
+        }
+
+        public Builder setCoverableList(List<Coverable> coverableList) {
+            this.coverableList = coverableList;
+            return this;
+        }
+
+        public Builder setCoverageList(List<Coverage> coverageList) {
+            this.coverageList = coverageList;
+            return this;
+        }
+
+        public Builder setUserId(int userId) {
+            this.userId = userId;
+            return this;
+        }
+
+        public Policy build() {
+            return new Policy(this.id, this.policyNo, this.startDate, this.endDate, this.premium, this.coverableList, this.coverageList);
+        }
     }
 }
