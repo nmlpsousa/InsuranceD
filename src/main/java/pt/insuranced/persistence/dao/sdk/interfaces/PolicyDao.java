@@ -4,6 +4,7 @@ import pt.insuranced.models.Policy;
 import pt.insuranced.sdk.exceptions.InsuranceDException;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PolicyDao extends GenericDao<Policy> {
     /**
@@ -13,4 +14,6 @@ public interface PolicyDao extends GenericDao<Policy> {
      * @throws InsuranceDException if an exception occurs while performing this action
      */
     List<Policy> getPoliciesFromUser(int userId) throws InsuranceDException;
+
+    Optional<Policy> getExtendedPolicyInformation(int policyId) throws InsuranceDException;
 }

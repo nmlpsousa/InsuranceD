@@ -64,10 +64,65 @@ public class Coverable {
     }
 
     public int getPolicyId() {
-        return policyId;
+        return this.policyId;
     }
 
     public void setPolicyId(int policyId) {
         this.policyId = policyId;
+    }
+
+    public static final class Builder {
+        private int id;
+
+        private int coverableNo;
+
+        private String description;
+
+        private List<Claim> claimList;
+
+        private List<Coverage> coverageList;
+
+        private int policyId;
+
+        private Builder() {
+        }
+
+        public static Builder newBuilder() {
+            return new Builder();
+        }
+
+        public Builder setId(int id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setCoverableNo(int coverableNo) {
+            this.coverableNo = coverableNo;
+            return this;
+        }
+
+        public Builder setDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public Builder setClaimList(List<Claim> claimList) {
+            this.claimList = claimList;
+            return this;
+        }
+
+        public Builder setCoverageList(List<Coverage> coverageList) {
+            this.coverageList = coverageList;
+            return this;
+        }
+
+        public Builder setPolicyId(int policyId) {
+            this.policyId = policyId;
+            return this;
+        }
+
+        public Coverable build() {
+            return new Coverable(this.id, this.coverableNo, this.description, this.claimList, this.coverageList);
+        }
     }
 }
