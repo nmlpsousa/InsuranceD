@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import mockit.Mock;
 import mockit.MockUp;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import pt.insuranced.models.Coverable;
 import pt.insuranced.models.Coverage;
@@ -14,11 +14,14 @@ import pt.insuranced.sdk.exceptions.InsuranceDException;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class PolicyServiceTest {
@@ -29,19 +32,31 @@ public class PolicyServiceTest {
         OBJECT_MAPPER.registerModule(new JavaTimeModule());
     }
 
-    private static Policy exampleSimplePolicy;
-
     private static Policy examplePolicyWithDetails;
 
-    @Before
-    public void setUp() {
-        exampleSimplePolicy = Policy.Builder.newBuilder()
+    private static List<Policy> simplePolicyList;
+
+    @BeforeClass
+    public static void setUp() {
+        Policy exampleSimplePolicy1 = Policy.Builder.newBuilder()
                 .setId(0)
                 .setPolicyNo(100001)
                 .setStartDate(LocalDate.of(2016, 6, 1))
-                .setEndDate(LocalDate.of(2016, 5, 31))
+                .setEndDate(LocalDate.of(2017, 5, 31))
                 .setPremium(521.79)
                 .build();
+
+        Policy exampleSimplePolicy2 = Policy.Builder.newBuilder()
+                .setId(1)
+                .setPolicyNo(100002)
+                .setStartDate(LocalDate.of(2016, 4, 1))
+                .setEndDate(LocalDate.of(2017, 3, 31))
+                .setPremium(323.59)
+                .build();
+
+        simplePolicyList = new ArrayList<>(2);
+        simplePolicyList.add(exampleSimplePolicy1);
+        simplePolicyList.add(exampleSimplePolicy2);
 
         Coverage coverage1 = Coverage.Builder.newBuilder()
                 .setId(2)
@@ -123,5 +138,71 @@ public class PolicyServiceTest {
         String response = policyService.getPolicyDetails(jsonInput);
 
         fail("The test should have thrown an InsuranceDException, because the policy did not exist.");
+    }
+
+    @Test
+    public void testGetPoliciesFromUserSuccess() throws InsuranceDException {
+        new MockUp<PolicyDaoImpl>() {
+            @Mock
+            public List<Policy> getPoliciesFromUser(int userId) throws InsuranceDException {
+                return new ArrayList<>(simplePolicyList);
+            }
+        };
+
+        String jsonInput = "{\"id\":\"0\"}";
+        PolicyService policyService = new PolicyService();
+        String response = policyService.getPoliciesFromUser(jsonInput);
+
+        try {
+            Policy[] policyArrayResponse = OBJECT_MAPPER.readValue(response, Policy[].class);
+            List<Policy> policyListResponse = Arrays.asList(policyArrayResponse);
+
+            assertNotNull(policyListResponse);
+            assertEquals(2, policyListResponse.size());
+            assertTrue(policyListResponse.get(0).getCoverableList() == null || policyListResponse.get(0).getCoverableList().isEmpty());
+            assertTrue(policyListResponse.get(0).getCoverageList() == null || policyListResponse.get(0).getCoverageList().isEmpty());
+        } catch (IOException exception) {
+            fail(exception.getMessage());
+        }
+    }
+
+    @Test(expected = InsuranceDException.class)
+    public void testGetPoliciesFromUserNonexistent() throws InsuranceDException {
+        new MockUp<PolicyDaoImpl>() {
+            @Mock
+            public List<Policy> getPoliciesFromUser(int userId) throws InsuranceDException {
+                throw new InsuranceDException("The client does not exist.");
+            }
+        };
+
+        String jsonInput = "{\"id\":\"0\"}";
+        PolicyService policyService = new PolicyService();
+        String response = policyService.getPoliciesFromUser(jsonInput);
+
+        fail("The test should have thrown an InsuranceDException, because the user does not exist.");
+    }
+
+    @Test
+    public void testGetPoliciesFromUserNoPolicies() throws InsuranceDException {
+        new MockUp<PolicyDaoImpl>() {
+            @Mock
+            public List<Policy> getPoliciesFromUser(int userId) throws InsuranceDException {
+                return new ArrayList<>(0);
+            }
+        };
+
+        String jsonInput = "{\"id\":\"0\"}";
+        PolicyService policyService = new PolicyService();
+        String response = policyService.getPoliciesFromUser(jsonInput);
+
+        try {
+            Policy[] policyArrayResponse = OBJECT_MAPPER.readValue(response, Policy[].class);
+            List<Policy> policyListResponse = Arrays.asList(policyArrayResponse);
+
+            assertNotNull(policyListResponse);
+            assertEquals(0, policyListResponse.size());
+        } catch (IOException exception) {
+            fail(exception.getMessage());
+        }
     }
 }
