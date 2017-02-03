@@ -19,12 +19,13 @@ public class Coverable {
     public Coverable() {
     }
 
-    public Coverable(int id, int coverableNo, String description, List<Claim> claimList, List<Coverage> coverageList) {
+    public Coverable(int id, int coverableNo, String description, List<Claim> claimList, List<Coverage> coverageList, int policyId) {
         this.id = id;
         this.coverableNo = coverableNo;
         this.description = description;
         this.claimList = claimList;
         this.coverageList = coverageList;
+        this.policyId = policyId;
     }
 
     public int getCoverableNo() {
@@ -122,7 +123,7 @@ public class Coverable {
         }
 
         public Coverable build() {
-            return new Coverable(this.id, this.coverableNo, this.description, this.claimList, this.coverageList);
+            return new Coverable(this.id, this.coverableNo, this.description, this.claimList, this.coverageList, this.policyId);
         }
     }
 }

@@ -177,7 +177,7 @@ public class PolicyServiceTest {
 
         String jsonInput = "{\"id\":\"0\"}";
         PolicyService policyService = new PolicyService();
-        String response = policyService.getPoliciesFromUser(jsonInput);
+        policyService.getPoliciesFromUser(jsonInput);
 
         fail("The test should have thrown an InsuranceDException, because the user does not exist.");
     }
