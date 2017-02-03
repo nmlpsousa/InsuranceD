@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import mockit.Mock;
 import mockit.MockUp;
-import org.apache.logging.log4j.core.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import pt.insuranced.models.Coverable;
