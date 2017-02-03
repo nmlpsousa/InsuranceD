@@ -55,7 +55,7 @@ public class UserServiceTest {
         };
         String jsonInput = "{\"id\":\"0\"}";
         UserService userService = new UserService();
-        String response = userService.getClientDetails(jsonInput);
+        userService.getClientDetails(jsonInput);
 
         // If the method does not throw an exception, it means the test failed
         fail();
@@ -117,7 +117,7 @@ public class UserServiceTest {
         String jsonInput = "{\"username\":\"\", \"password\":{\"id\": \"0\", \"hashedPassword\":\"batata\"},\"personalIdentification\":null,\"oldPasswords\":null,"
                 + "\"lastPasswordChangeDate\":[2017,1,30],\"userType\":\"CLIENT\",\"userStatus\":\"PENDING\",\"policyList\":null}";
         UserService userService = new UserService();
-        String response = userService.insertClient(jsonInput);
+        userService.insertClient(jsonInput);
 
         fail("The insert call should have thrown an exception.");
     }

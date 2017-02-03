@@ -3,7 +3,6 @@ package pt.insuranced.services;
 import mockit.Mock;
 import mockit.MockUp;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import pt.insuranced.models.Claim;
 import pt.insuranced.models.ReserveLine;
@@ -20,7 +19,6 @@ import static org.junit.Assert.fail;
 
 public class ClaimServiceTest {
 
-	@Ignore
     @Test(expected = InsuranceDException.class)
     public void testReportClaimFail() throws InsuranceDException {
         new MockUp<ClaimDaoImpl>() {
@@ -31,13 +29,12 @@ public class ClaimServiceTest {
         };
         String jsonInput = "{\"id\":\"0\"}";
         ClaimsService claimsService = new ClaimsService();
-        String response = claimsService.reportClaim(jsonInput);
+        claimsService.reportClaim(jsonInput);
 
         // If the method does not throw an exception, it means the test failed
         fail();
     }
 
-    @Ignore
     @Test
     public void testReportClaimPass() throws InsuranceDException {
 
@@ -104,5 +101,4 @@ public class ClaimServiceTest {
 
         System.out.println(response);
     }
-
 }
