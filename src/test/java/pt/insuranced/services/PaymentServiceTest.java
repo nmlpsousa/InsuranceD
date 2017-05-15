@@ -72,7 +72,7 @@ public class PaymentServiceTest {
 
             assertNotNull(paymentResponse);
             assertEquals(PaymentStatusEnum.OPEN, paymentResponse.getStatus());
-            assertEquals((Double) 100.0, paymentResponse.getAmmount());
+            assertEquals((Double) 100.0, paymentResponse.getAmount());
         } catch (IOException exception) {
             fail(exception.getMessage());
         }

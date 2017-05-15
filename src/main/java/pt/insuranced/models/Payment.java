@@ -12,19 +12,19 @@ public class Payment {
     // TODO possible improvement, having its own structure in the DB
     private String payee;
 
-    private Double ammount;
+    private Double amount;
 
     private PaymentStatusEnum status;
 
     public Payment() {
     }
 
-    public Payment(int id, int paymentNo, Coverage coverage, String payee, Double ammount, PaymentStatusEnum status) {
+    public Payment(int id, int paymentNo, Coverage coverage, String payee, Double amount, PaymentStatusEnum status) {
         this.id = id;
         this.paymentNo = paymentNo;
         this.coverage = coverage;
         this.payee = payee;
-        this.ammount = ammount;
+        this.amount = amount;
         this.status = status;
     }
 
@@ -56,12 +56,12 @@ public class Payment {
         this.payee = payee;
     }
 
-    public Double getAmmount() {
-        return this.ammount;
+    public Double getAmount() {
+        return this.amount;
     }
 
-    public void setAmmount(Double ammount) {
-        this.ammount = ammount;
+    public void setAmount(Double amount) {
+        this.amount = amount;
     }
 
     public PaymentStatusEnum getStatus() {

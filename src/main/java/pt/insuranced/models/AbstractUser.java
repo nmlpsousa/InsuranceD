@@ -2,6 +2,7 @@ package pt.insuranced.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import pt.insuranced.sdk.enums.UserStatusEnum;
 import pt.insuranced.sdk.enums.UserTypeEnum;
 
@@ -101,5 +102,19 @@ public abstract class AbstractUser {
 
     public int getId() {
         return this.id;
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("id", this.id)
+                .append("username", this.username)
+                .append("password", this.password)
+                .append("personalIdentification", this.personalIdentification)
+                .append("oldPasswords", this.oldPasswords)
+                .append("lastPasswordChangeDate", this.lastPasswordChangeDate)
+                .append("userType", this.userType)
+                .append("userStatus", this.userStatus)
+                .toString();
     }
 }

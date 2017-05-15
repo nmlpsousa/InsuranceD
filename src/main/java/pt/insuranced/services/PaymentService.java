@@ -47,7 +47,7 @@ public class PaymentService {
     	try {
     		Payment newPayment = OBJECT_MAPPER.readValue(jsonInput, Payment.class);
     		//TODO: Validate if payment is valid.
-            Boolean paymentIsValid = isPaymentValid(newPayment, payment -> StringUtils.isNotEmpty(payment.getPayee()) && payment.getAmmount() > 0
+            Boolean paymentIsValid = isPaymentValid(newPayment, payment -> StringUtils.isNotEmpty(payment.getPayee()) && payment.getAmount() > 0
                     && PaymentStatusEnum.OPEN == payment.getStatus());
             if (!paymentIsValid) {
                 throw new InsuranceDException("The payment is invalid.");
