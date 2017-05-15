@@ -7,7 +7,8 @@ CREATE TABLE public."Password"
   password character varying,
   "userId" bigint,
   "isActive" boolean,
-  id bigint NOT NULL DEFAULT nextval('"Password_id_seq"'::regclass)
+  id bigint NOT NULL DEFAULT nextval('"Password_id_seq"'::regclass),
+  CONSTRAINT pk_password PRIMARY KEY (id)
 )
 WITH (
   OIDS=FALSE
@@ -39,12 +40,13 @@ ALTER TABLE public."Users"
 
 CREATE TABLE public."Client"
 (
--- Inherited from table "Users":  "personalId" integer,
--- Inherited from table "Users":  "typeId" integer,
+-- Inherited from table "Users":  "personalId" bigint,
+-- Inherited from table "Users":  "typeId" bigint,
 -- Inherited from table "Users":  username character varying,
 -- Inherited from table "Users":  "lastPasswordChangeDate" date,
--- Inherited from table "Users":  "statusId" integer,
-  id bigint NOT NULL DEFAULT nextval('"Client_id_seq"'::regclass)
+-- Inherited from table "Users":  "statusId" bigint,
+  id bigint NOT NULL DEFAULT nextval('"Client_id_seq"'::regclass),
+  CONSTRAINT pk_client PRIMARY KEY (id)
 )
 INHERITS (public."Users")
 WITH (
@@ -59,13 +61,14 @@ ALTER TABLE public."Client"
 
 CREATE TABLE public."AccountManager"
 (
--- Inherited from table "Users":  "personalId" integer,
--- Inherited from table "Users":  "typeId" integer,
+-- Inherited from table "Users":  "personalId" bigint,
+-- Inherited from table "Users":  "typeId" bigint,
 -- Inherited from table "Users":  username character varying,
 -- Inherited from table "Users":  "lastPasswordChangeDate" date,
--- Inherited from table "Users":  "statusId" integer,
+-- Inherited from table "Users":  "statusId" bigint,
   "employeeNo" integer,
-  id bigint NOT NULL DEFAULT nextval('"AccountManager_id_seq"'::regclass)
+  id bigint NOT NULL DEFAULT nextval('"AccountManager_id_seq"'::regclass),
+  CONSTRAINT "pk_accountManager" PRIMARY KEY (id)
 )
 INHERITS (public."Users")
 WITH (
@@ -87,7 +90,8 @@ CREATE TABLE public."PersonalIdentification"
   "identificationNo" character varying,
   "fiscalNumber" character varying,
   id bigint NOT NULL DEFAULT nextval('"PersonalIdentification_id_seq"'::regclass),
-  "phoneNumberId" bigint
+  "phoneNumberId" bigint,
+  CONSTRAINT "pk_personalIdentification" PRIMARY KEY (id)
 )
 WITH (
   OIDS=FALSE
@@ -286,7 +290,8 @@ ALTER TABLE public."UserStatus"
 CREATE TABLE public."PaymentStatus"
 (
   id bigint NOT NULL DEFAULT nextval('"PaymentStatus_id_seq"'::regclass),
-  "paymentStatus" character varying
+  "paymentStatus" character varying,
+  CONSTRAINT "pk_paymentStatus" PRIMARY KEY (id)
 )
 WITH (
   OIDS=FALSE
@@ -326,3 +331,4 @@ WITH (
 );
 ALTER TABLE public."ClaimStatus"
   OWNER TO postgres;
+
