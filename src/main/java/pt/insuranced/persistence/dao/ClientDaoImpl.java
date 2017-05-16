@@ -13,10 +13,11 @@ import pt.insuranced.persistence.dao.sdk.interfaces.ClientDao;
 import pt.insuranced.sdk.exceptions.InsuranceDException;
 
 import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.MessageFormat;
 import java.util.Optional;
 
 public class ClientDaoImpl implements ClientDao {
@@ -54,35 +55,24 @@ public class ClientDaoImpl implements ClientDao {
 
     @Override
     public Client insert(Client client) throws InsuranceDException {
-        ResultSet resultSet = null;
         Connection connection = null;
         Boolean previousAutoCommit = null;
         try {
             connection = ConnectionManager.getConnection();
             previousAutoCommit = connection.getAutoCommit();
             connection.setAutoCommit(false);
-            Statement statement = connection.createStatement();
 
             PersonalIdentification personalIdentification = client.getPersonalIdentification();
-            Address address = personalIdentification.getAddress();
             PhoneNumber phoneNumber = personalIdentification.getPhoneNumber();
+            Address address = personalIdentification.getAddress();
 
-            Integer countryCode = address.getCountry() == null ? null : address.getCountry().getCode();
+            long addressId = insertAddress(connection, address);
+            long phoneNumberId = insertPhoneNumber(connection, phoneNumber);
+            long personalIdentificationId = insertPersonalIdentification(connection, personalIdentification, addressId, phoneNumberId);
 
-            String addressInsertSql = MessageFormat.format("INSERT INTO public.\"Address\"( \"addressLine1\", \"addressLine2\", city, \"postalCode\", \"countryId\") VALUES({0}, "
-                    + "{1}, {2}, {3}, "
-                    + "{4});", getOrNull(address.getAddressLine1()), getOrNull(address.getAddressLine2()), getOrNull(address.getCity()), getOrNull(address.getPostalCode()),
-                    getOrNull(countryCode));
-
-            //String query = "insert into public.\"Client\"(username) values ('" + client.getUsername() + "');";
-            int generatedKeys = statement.executeUpdate(addressInsertSql, Statement.RETURN_GENERATED_KEYS);
-            if (generatedKeys == 0) {
-                throw new InsuranceDException("Error inserting Address into the DB.");
-            }
-
-            statement.getGeneratedKeys().next();
-            long addressId = statement.getGeneratedKeys().getLong("id");
             LOGGER.info("Inserted Address ID is {}", addressId);
+            LOGGER.info("Inserted Phone Number ID is {}", phoneNumberId);
+            LOGGER.info("Inserted Personal Identification ID is {}", personalIdentificationId);
 
             connection.commit();
         } catch (SQLException e) {
@@ -96,6 +86,61 @@ public class ClientDaoImpl implements ClientDao {
             }
         }
         return null;
+    }
+
+    private long insertPhoneNumber(Connection connection, PhoneNumber phoneNumber) throws SQLException, InsuranceDException {
+        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO public.\"PhoneNumber\"( prefix, \"number\") VALUES(?, ?);", Statement.RETURN_GENERATED_KEYS);
+        preparedStatement.setString(1, phoneNumber.getPrefix());
+        preparedStatement.setInt(2, phoneNumber.getNumber());
+
+        int generatedKeys = preparedStatement.executeUpdate();
+        if (generatedKeys == 0) {
+            throw new InsuranceDException("Error inserting Phone Number into the DB.");
+        }
+
+        preparedStatement.getGeneratedKeys().next();
+        return preparedStatement.getGeneratedKeys().getLong("id");
+    }
+
+    private long insertPersonalIdentification(Connection connection, PersonalIdentification personalIdentification, long addressId, long phoneNumberId) throws SQLException,
+            InsuranceDException {
+        PreparedStatement statement = connection.prepareStatement("INSERT INTO public.\"PersonalIdentification\"( \"firstName\", \"lastName\", \"dateOfBirth\", \"addressId\", "
+                + "\"identificationNo\", \"fiscalNumber\", \"phoneNumberId\") VALUES(?, ?, ?, ?, ?, ?, ?); ", Statement.RETURN_GENERATED_KEYS);
+
+        statement.setString(1, personalIdentification.getFirstName());
+        statement.setString(2, personalIdentification.getLastName());
+        statement.setDate(3, Date.valueOf(personalIdentification.getDateOfBirth()));
+        statement.setLong(4, addressId);
+        statement.setString(5, personalIdentification.getIdentificationNumber());
+        statement.setString(6, personalIdentification.getFiscalNumber());
+        statement.setLong(7, phoneNumberId);
+
+        int generatedKeys = statement.executeUpdate();
+        if (generatedKeys == 0) {
+            throw new InsuranceDException("Error inserting Personal Identification into the DB.");
+        }
+
+        statement.getGeneratedKeys().next();
+        return statement.getGeneratedKeys().getLong("id");
+    }
+
+    private long insertAddress(Connection connection, Address address) throws SQLException, InsuranceDException {
+        PreparedStatement statement = connection.prepareStatement("INSERT INTO public.\"Address\"( \"addressLine1\", \"addressLine2\", city, \"postalCode\", \"countryId\") "
+                + "VALUES (?, ?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
+
+        statement.setString(1, address.getAddressLine1());
+        statement.setString(2, address.getAddressLine2());
+        statement.setString(3, address.getCity());
+        statement.setString(4, address.getPostalCode());
+        statement.setInt(5, address.getCountry().getCode());
+
+        int generatedKeys = statement.executeUpdate();
+        if (generatedKeys == 0) {
+            throw new InsuranceDException("Error inserting Address into the DB.");
+        }
+
+        statement.getGeneratedKeys().next();
+        return statement.getGeneratedKeys().getLong("id");
     }
 
     private static void rollbackConnection(Connection connection) {
@@ -121,10 +166,6 @@ public class ClientDaoImpl implements ClientDao {
         } catch (SQLException e) {
             LOGGER.error("Error closing connection to the DB.", e);
         }
-    }
-
-    private static String getOrNull(Object object) {
-        return object == null ? "NULL" : "'" + object + "'";
     }
 
     @Override
