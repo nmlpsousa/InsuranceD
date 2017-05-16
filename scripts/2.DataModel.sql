@@ -238,7 +238,6 @@ ALTER TABLE public.reserveline
 CREATE TABLE public.policy
 (
   id bigint NOT NULL DEFAULT nextval('policy_id_seq'::regclass),
-  policyno integer,
   startdate date,
   enddate date,
   premium double precision,
