@@ -1,188 +1,188 @@
--- Table: public."Password"
+-- Table: public.password
 
--- DROP TABLE public."Password";
+-- DROP TABLE public.password;
 
-CREATE TABLE public."Password"
+CREATE TABLE public.password
 (
   password character varying,
-  "userId" bigint,
-  "isActive" boolean,
-  id bigint NOT NULL DEFAULT nextval('"Password_id_seq"'::regclass),
+  userid bigint,
+  isactive boolean,
+  id bigint NOT NULL DEFAULT nextval('password_id_seq'::regclass),
   CONSTRAINT pk_password PRIMARY KEY (id)
 )
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE public."Password"
+ALTER TABLE public.password
   OWNER TO postgres;
 
--- Table: public."Users"
+-- Table: public.users
 
--- DROP TABLE public."Users";
+-- DROP TABLE public.users;
 
-CREATE TABLE public."Users"
+CREATE TABLE public.users
 (
-  "personalId" bigint,
-  "typeId" bigint,
+  personalid bigint,
+  typeid bigint,
   username character varying,
-  "lastPasswordChangeDate" date,
-  "statusId" bigint
+  lastpasswordchangedate date,
+  statusid bigint
 )
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE public."Users"
+ALTER TABLE public.users
   OWNER TO postgres;
   
--- Table: public."Client"
+-- Table: public.client
 
--- DROP TABLE public."Client";
+-- DROP TABLE public.client;
 
-CREATE TABLE public."Client"
+CREATE TABLE public.client
 (
--- Inherited from table "Users":  "personalId" bigint,
--- Inherited from table "Users":  "typeId" bigint,
--- Inherited from table "Users":  username character varying,
--- Inherited from table "Users":  "lastPasswordChangeDate" date,
--- Inherited from table "Users":  "statusId" bigint,
-  id bigint NOT NULL DEFAULT nextval('"Client_id_seq"'::regclass),
+-- Inherited from table users:  personalid bigint,
+-- Inherited from table users:  typeid bigint,
+-- Inherited from table users:  username character varying,
+-- Inherited from table users:  lastpasswordchangedate date,
+-- Inherited from table users:  statusid bigint,
+  id bigint NOT NULL DEFAULT nextval('client_id_seq'::regclass),
   CONSTRAINT pk_client PRIMARY KEY (id)
 )
-INHERITS (public."Users")
+INHERITS (public.users)
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE public."Client"
+ALTER TABLE public.client
   OWNER TO postgres;
 
--- Table: public."AccountManager"
+-- Table: public.accountmanager
 
--- DROP TABLE public."AccountManager";
+-- DROP TABLE public.accountmanager;
 
-CREATE TABLE public."AccountManager"
+CREATE TABLE public.accountmanager
 (
--- Inherited from table "Users":  "personalId" bigint,
--- Inherited from table "Users":  "typeId" bigint,
--- Inherited from table "Users":  username character varying,
--- Inherited from table "Users":  "lastPasswordChangeDate" date,
--- Inherited from table "Users":  "statusId" bigint,
-  "employeeNo" integer,
-  id bigint NOT NULL DEFAULT nextval('"AccountManager_id_seq"'::regclass),
-  CONSTRAINT "pk_accountManager" PRIMARY KEY (id)
+-- Inherited from table users:  personalid bigint,
+-- Inherited from table users:  typeid bigint,
+-- Inherited from table users:  username character varying,
+-- Inherited from table users:  lastpasswordchangedate date,
+-- Inherited from table users:  statusid bigint,
+  employeeno integer,
+  id bigint NOT NULL DEFAULT nextval('accountmanager_id_seq'::regclass),
+  CONSTRAINT pk_accountmanager PRIMARY KEY (id)
 )
-INHERITS (public."Users")
+INHERITS (public.users)
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE public."AccountManager"
+ALTER TABLE public.accountmanager
   OWNER TO postgres;
 
--- Table: public."PersonalIdentification"
+-- Table: public.personalidentification
 
--- DROP TABLE public."PersonalIdentification";
+-- DROP TABLE public.personalidentification;
 
-CREATE TABLE public."PersonalIdentification"
+CREATE TABLE public.personalidentification
 (
-  "firstName" character varying,
-  "lastName" character varying,
-  "dateOfBirth" date,
-  "addressId" bigint,
-  "identificationNo" character varying,
-  "fiscalNumber" character varying,
-  id bigint NOT NULL DEFAULT nextval('"PersonalIdentification_id_seq"'::regclass),
-  "phoneNumberId" bigint,
-  CONSTRAINT "pk_personalIdentification" PRIMARY KEY (id)
+  firstname character varying,
+  lastname character varying,
+  dateofbirth date,
+  addressid bigint,
+  identificationno character varying,
+  fiscalnumber character varying,
+  id bigint NOT NULL DEFAULT nextval('personalidentification_id_seq'::regclass),
+  phonenumberid bigint,
+  CONSTRAINT pk_personalidentification PRIMARY KEY (id)
 )
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE public."PersonalIdentification"
+ALTER TABLE public.personalidentification
   OWNER TO postgres;
 
--- Table: public."Address"
+-- Table: public.address
 
--- DROP TABLE public."Address";
+-- DROP TABLE public.address;
 
-CREATE TABLE public."Address"
+CREATE TABLE public.address
 (
-  "addressLine1" character varying,
-  "addressLine2" character varying,
+  addressline1 character varying,
+  addressline2 character varying,
   city character varying,
-  "postalCode" character varying,
-  "countryId" integer,
-  id bigint NOT NULL DEFAULT nextval('"Address_id_seq"'::regclass)
+  postalcode character varying,
+  countryid integer,
+  id bigint NOT NULL DEFAULT nextval('address_id_seq'::regclass)
 )
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE public."Address"
+ALTER TABLE public.address
   OWNER TO postgres;
 
--- Table: public."PhoneNumber"
+-- Table: public.phonenumber
 
--- DROP TABLE public."PhoneNumber";
+-- DROP TABLE public.phonenumber;
 
-CREATE TABLE public."PhoneNumber"
+CREATE TABLE public.phonenumber
 (
-  id bigint NOT NULL DEFAULT nextval('"PhoneNumber_id_seq"'::regclass),
-  prefix character varying,
-  "number" integer,
-  CONSTRAINT "pk_phoneNumber" PRIMARY KEY (id)
+  id bigint NOT NULL DEFAULT nextval('phonenumber_id_seq'::regclass),
+  pref character varying,
+  num integer,
+  CONSTRAINT pk_phonenumber PRIMARY KEY (id)
 )
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE public."PhoneNumber"
+ALTER TABLE public.phonenumber
   OWNER TO postgres;
 
--- Table: public."Claim"
+-- Table: public.claim
 
--- DROP TABLE public."Claim";
+-- DROP TABLE public.claim;
 
-CREATE TABLE public."Claim"
+CREATE TABLE public.claim
 (
-  id bigint NOT NULL DEFAULT nextval('"Claim_id_seq"'::regclass),
-  "coverableId" bigint,
-  "claimNo" integer,
+  id bigint NOT NULL DEFAULT nextval('claim_id_seq'::regclass),
+  coverableid bigint,
+  claimno integer,
   description character varying,
-  "incidentDate" date,
-  "claimStatusId" bigint,
-  "reserveLineId" bigint,
+  incidentdate date,
+  claimstatusid bigint,
+  reservelineid bigint,
   CONSTRAINT pk_claim PRIMARY KEY (id)
 )
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE public."Claim"
+ALTER TABLE public.claim
   OWNER TO postgres;
 
--- Table: public."Coverable"
+-- Table: public.coverable
 
--- DROP TABLE public."Coverable";
+-- DROP TABLE public.coverable;
 
-CREATE TABLE public."Coverable"
+CREATE TABLE public.coverable
 (
-  id bigint NOT NULL DEFAULT nextval('"Coverable_id_seq"'::regclass),
-  "coverableNo" integer,
+  id bigint NOT NULL DEFAULT nextval('coverable_id_seq'::regclass),
+  coverableno integer,
   description character varying,
-  "policyId" bigint,
+  policyid bigint,
   CONSTRAINT pk_coverable PRIMARY KEY (id)
 )
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE public."Coverable"
+ALTER TABLE public.coverable
   OWNER TO postgres;
 
--- Table: public."Coverage"
+-- Table: public.coverage
 
--- DROP TABLE public."Coverage";
+-- DROP TABLE public.coverage;
 
-CREATE TABLE public."Coverage"
+CREATE TABLE public.coverage
 (
-  id bigint NOT NULL DEFAULT nextval('"Coverage_id_seq"'::regclass),
-  "coverableId" bigint,
-  "limit" double precision,
+  id bigint NOT NULL DEFAULT nextval('coverage_id_seq'::regclass),
+  coverableid bigint,
+  lim double precision,
   premium double precision,
   description character varying,
   CONSTRAINT pk_coverage PRIMARY KEY (id)
@@ -190,122 +190,122 @@ CREATE TABLE public."Coverage"
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE public."Coverage"
+ALTER TABLE public.coverage
   OWNER TO postgres;
 
--- Table: public."Payment"
+-- Table: public.payment
 
--- DROP TABLE public."Payment";
+-- DROP TABLE public.payment;
 
-CREATE TABLE public."Payment"
+CREATE TABLE public.payment
 (
-  id bigint NOT NULL DEFAULT nextval('"Payment_id_seq"'::regclass),
-  "paymentNo" integer,
-  "coverageId" bigint,
+  id bigint NOT NULL DEFAULT nextval('payment_id_seq'::regclass),
+  paymentno integer,
+  coverageid bigint,
   payee character varying,
   amount double precision,
-  "paymentStatusId" bigint,
+  paymentstatusid bigint,
   CONSTRAINT pk_payment PRIMARY KEY (id)
 )
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE public."Payment"
+ALTER TABLE public.payment
   OWNER TO postgres;
 
--- Table: public."ReserveLine"
+-- Table: public.reserveline
 
--- DROP TABLE public."ReserveLine";
+-- DROP TABLE public.reserveline;
 
-CREATE TABLE public."ReserveLine"
+CREATE TABLE public.reserveline
 (
-  id bigint NOT NULL DEFAULT nextval('"ReserveLine_id_seq"'::regclass),
+  id bigint NOT NULL DEFAULT nextval('reserveline_id_seq'::regclass),
   description character varying,
-  "limit" double precision,
-  "usedFunds" double precision,
-  CONSTRAINT "pk_reserveLine" PRIMARY KEY (id)
+  lim double precision,
+  usedfunds double precision,
+  CONSTRAINT pk_reserveline PRIMARY KEY (id)
 )
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE public."ReserveLine"
+ALTER TABLE public.reserveline
   OWNER TO postgres;
 
--- Table: public."Policy"
+-- Table: public.policy
 
--- DROP TABLE public."Policy";
+-- DROP TABLE public.policy;
 
-CREATE TABLE public."Policy"
+CREATE TABLE public.policy
 (
-  id bigint NOT NULL DEFAULT nextval('"Policy_id_seq"'::regclass),
-  "policyNo" integer,
-  "startDate" date,
-  "endDate" date,
+  id bigint NOT NULL DEFAULT nextval('policy_id_seq'::regclass),
+  policyno integer,
+  startdate date,
+  enddate date,
   premium double precision,
-  "userId" bigint,
+  userid bigint,
   CONSTRAINT pk_policy PRIMARY KEY (id)
 )
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE public."Policy"
+ALTER TABLE public.policy
   OWNER TO postgres;
 
--- Table: public."UserType"
+-- Table: public.usertype
 
--- DROP TABLE public."UserType";
+-- DROP TABLE public.usertype;
 
-CREATE TABLE public."UserType"
+CREATE TABLE public.usertype
 (
-  id bigint NOT NULL DEFAULT nextval('"UserType_id_seq"'::regclass),
-  "userType" character varying,
-  CONSTRAINT "pk_userType" PRIMARY KEY (id)
+  id bigint NOT NULL DEFAULT nextval('usertype_id_seq'::regclass),
+  usertype character varying,
+  CONSTRAINT pk_usertype PRIMARY KEY (id)
 )
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE public."UserType"
+ALTER TABLE public.usertype
   OWNER TO postgres;
 
--- Table: public."UserStatus"
+-- Table: public.userstatus
 
--- DROP TABLE public."UserStatus";
+-- DROP TABLE public.userstatus;
 
-CREATE TABLE public."UserStatus"
+CREATE TABLE public.userstatus
 (
-  id bigint NOT NULL DEFAULT nextval('"UserStatus_id_seq"'::regclass),
-  "userStatus" character varying,
-  CONSTRAINT "pk_userStatus" PRIMARY KEY (id)
+  id bigint NOT NULL DEFAULT nextval('userstatus_id_seq'::regclass),
+  userstatus character varying,
+  CONSTRAINT pk_userstatus PRIMARY KEY (id)
 )
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE public."UserStatus"
+ALTER TABLE public.userstatus
   OWNER TO postgres;
 
--- Table: public."PaymentStatus"
+-- Table: public.paymentstatus
 
--- DROP TABLE public."PaymentStatus";
+-- DROP TABLE public.paymentstatus;
 
-CREATE TABLE public."PaymentStatus"
+CREATE TABLE public.paymentstatus
 (
-  id bigint NOT NULL DEFAULT nextval('"PaymentStatus_id_seq"'::regclass),
-  "paymentStatus" character varying,
-  CONSTRAINT "pk_paymentStatus" PRIMARY KEY (id)
+  id bigint NOT NULL DEFAULT nextval('paymentstatus_id_seq'::regclass),
+  paymentstatus character varying,
+  CONSTRAINT pk_paymentstatus PRIMARY KEY (id)
 )
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE public."PaymentStatus"
+ALTER TABLE public.paymentstatus
   OWNER TO postgres;
 
--- Table: public."Countries"
+-- Table: public.countries
 
--- DROP TABLE public."Countries";
+-- DROP TABLE public.countries;
 
-CREATE TABLE public."Countries"
+CREATE TABLE public.countries
 (
-  id bigint NOT NULL DEFAULT nextval('"Countries_id_seq"'::regclass),
+  id bigint NOT NULL DEFAULT nextval('countries_id_seq'::regclass),
   description character varying,
   abbreviation character varying,
   CONSTRAINT pk_countries PRIMARY KEY (id)
@@ -313,22 +313,21 @@ CREATE TABLE public."Countries"
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE public."Countries"
+ALTER TABLE public.countries
   OWNER TO postgres;
 
--- Table: public."ClaimStatus"
+-- Table: public.claimstatus
 
--- DROP TABLE public."ClaimStatus";
+-- DROP TABLE public.claimstatus;
 
-CREATE TABLE public."ClaimStatus"
+CREATE TABLE public.claimstatus
 (
-  id bigint NOT NULL DEFAULT nextval('"ClaimStatus_id_seq"'::regclass),
+  id bigint NOT NULL DEFAULT nextval('claimstatus_id_seq'::regclass),
   description character varying,
-  CONSTRAINT "pk_claimStatus" PRIMARY KEY (id)
+  CONSTRAINT pk_claimstatus PRIMARY KEY (id)
 )
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE public."ClaimStatus"
+ALTER TABLE public.claimstatus
   OWNER TO postgres;
-
