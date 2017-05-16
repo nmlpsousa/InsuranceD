@@ -1,220 +1,220 @@
--- Sequence: public."AccountManager_id_seq"
+-- Sequence: public.accountmanager_id_seq
 
--- DROP SEQUENCE public."AccountManager_id_seq";
+-- DROP SEQUENCE public.accountmanager_id_seq;
 
-CREATE SEQUENCE public."AccountManager_id_seq"
+CREATE SEQUENCE public.accountmanager_id_seq
   INCREMENT 1
   MINVALUE 1
   MAXVALUE 9223372036854775807
   START 1
   CACHE 1;
-ALTER TABLE public."AccountManager_id_seq"
+ALTER TABLE public.accountmanager_id_seq
   OWNER TO postgres;
 
--- Sequence: public."Address_id_seq"
+-- Sequence: public.address_id_seq
 
--- DROP SEQUENCE public."Address_id_seq";
+-- DROP SEQUENCE public.address_id_seq;
 
-CREATE SEQUENCE public."Address_id_seq"
+CREATE SEQUENCE public.address_id_seq
   INCREMENT 1
   MINVALUE 1
   MAXVALUE 9223372036854775807
   START 1
   CACHE 1;
-ALTER TABLE public."Address_id_seq"
+ALTER TABLE public.address_id_seq
   OWNER TO postgres;
 
--- Sequence: public."ClaimStatus_id_seq"
+-- Sequence: public.claimstatus_id_seq
 
--- DROP SEQUENCE public."ClaimStatus_id_seq";
+-- DROP SEQUENCE public.claimstatus_id_seq;
 
-CREATE SEQUENCE public."ClaimStatus_id_seq"
+CREATE SEQUENCE public.claimstatus_id_seq
   INCREMENT 1
   MINVALUE 1
   MAXVALUE 9223372036854775807
   START 1
   CACHE 1;
-ALTER TABLE public."ClaimStatus_id_seq"
+ALTER TABLE public.claimstatus_id_seq
   OWNER TO postgres;
 
--- Sequence: public."Claim_id_seq"
+-- Sequence: public.claim_id_seq
 
--- DROP SEQUENCE public."Claim_id_seq";
+-- DROP SEQUENCE public.claim_id_seq;
 
-CREATE SEQUENCE public."Claim_id_seq"
+CREATE SEQUENCE public.claim_id_seq
   INCREMENT 1
   MINVALUE 1
   MAXVALUE 9223372036854775807
   START 1
   CACHE 1;
-ALTER TABLE public."Claim_id_seq"
+ALTER TABLE public.claim_id_seq
   OWNER TO postgres;
 
--- Sequence: public."Client_id_seq"
+-- Sequence: public.client_id_seq
 
--- DROP SEQUENCE public."Client_id_seq";
+-- DROP SEQUENCE public.client_id_seq;
 
-CREATE SEQUENCE public."Client_id_seq"
+CREATE SEQUENCE public.client_id_seq
   INCREMENT 1
   MINVALUE 1
   MAXVALUE 9223372036854775807
   START 1
   CACHE 1;
-ALTER TABLE public."Client_id_seq"
+ALTER TABLE public.client_id_seq
   OWNER TO postgres;
 
--- Sequence: public."Countries_id_seq"
+-- Sequence: public.countries_id_seq
 
--- DROP SEQUENCE public."Countries_id_seq";
+-- DROP SEQUENCE public.countries_id_seq;
 
-CREATE SEQUENCE public."Countries_id_seq"
+CREATE SEQUENCE public.countries_id_seq
   INCREMENT 1
   MINVALUE 1
   MAXVALUE 9223372036854775807
   START 1
   CACHE 1;
-ALTER TABLE public."Countries_id_seq"
+ALTER TABLE public.countries_id_seq
   OWNER TO postgres;
 
--- Sequence: public."Coverable_id_seq"
+-- Sequence: public.coverable_id_seq
 
--- DROP SEQUENCE public."Coverable_id_seq";
+-- DROP SEQUENCE public.coverable_id_seq;
 
-CREATE SEQUENCE public."Coverable_id_seq"
+CREATE SEQUENCE public.coverable_id_seq
   INCREMENT 1
   MINVALUE 1
   MAXVALUE 9223372036854775807
   START 1
   CACHE 1;
-ALTER TABLE public."Coverable_id_seq"
+ALTER TABLE public.coverable_id_seq
   OWNER TO postgres;
 
--- Sequence: public."Coverage_id_seq"
+-- Sequence: public.coverage_id_seq
 
--- DROP SEQUENCE public."Coverage_id_seq";
+-- DROP SEQUENCE public.coverage_id_seq;
 
-CREATE SEQUENCE public."Coverage_id_seq"
+CREATE SEQUENCE public.coverage_id_seq
   INCREMENT 1
   MINVALUE 1
   MAXVALUE 9223372036854775807
   START 1
   CACHE 1;
-ALTER TABLE public."Coverage_id_seq"
+ALTER TABLE public.coverage_id_seq
   OWNER TO postgres;
 
--- Sequence: public."Password_id_seq"
+-- Sequence: public.password_id_seq
 
--- DROP SEQUENCE public."Password_id_seq";
+-- DROP SEQUENCE public.password_id_seq;
 
-CREATE SEQUENCE public."Password_id_seq"
+CREATE SEQUENCE public.password_id_seq
   INCREMENT 1
   MINVALUE 1
   MAXVALUE 9223372036854775807
   START 1
   CACHE 1;
-ALTER TABLE public."Password_id_seq"
+ALTER TABLE public.password_id_seq
   OWNER TO postgres;
 
--- Sequence: public."PaymentStatus_id_seq"
+-- Sequence: public.paymentstatus_id_seq
 
--- DROP SEQUENCE public."PaymentStatus_id_seq";
+-- DROP SEQUENCE public.paymentstatus_id_seq;
 
-CREATE SEQUENCE public."PaymentStatus_id_seq"
+CREATE SEQUENCE public.paymentstatus_id_seq
   INCREMENT 1
   MINVALUE 1
   MAXVALUE 9223372036854775807
   START 1
   CACHE 1;
-ALTER TABLE public."PaymentStatus_id_seq"
+ALTER TABLE public.paymentstatus_id_seq
   OWNER TO postgres;
 
--- Sequence: public."Payment_id_seq"
+-- Sequence: public.payment_id_seq
 
--- DROP SEQUENCE public."Payment_id_seq";
+-- DROP SEQUENCE public.payment_id_seq;
 
-CREATE SEQUENCE public."Payment_id_seq"
+CREATE SEQUENCE public.payment_id_seq
   INCREMENT 1
   MINVALUE 1
   MAXVALUE 9223372036854775807
   START 1
   CACHE 1;
-ALTER TABLE public."Payment_id_seq"
+ALTER TABLE public.payment_id_seq
   OWNER TO postgres;
 
--- Sequence: public."PersonalIdentification_id_seq"
+-- Sequence: public.personalidentification_id_seq
 
--- DROP SEQUENCE public."PersonalIdentification_id_seq";
+-- DROP SEQUENCE public.personalidentification_id_seq;
 
-CREATE SEQUENCE public."PersonalIdentification_id_seq"
+CREATE SEQUENCE public.personalidentification_id_seq
   INCREMENT 1
   MINVALUE 1
   MAXVALUE 9223372036854775807
   START 1
   CACHE 1;
-ALTER TABLE public."PersonalIdentification_id_seq"
+ALTER TABLE public.personalidentification_id_seq
   OWNER TO postgres;
 
--- Sequence: public."PhoneNumber_id_seq"
+-- Sequence: public.phonenumber_id_seq
 
--- DROP SEQUENCE public."PhoneNumber_id_seq";
+-- DROP SEQUENCE public.phonenumber_id_seq;
 
-CREATE SEQUENCE public."PhoneNumber_id_seq"
+CREATE SEQUENCE public.phonenumber_id_seq
   INCREMENT 1
   MINVALUE 1
   MAXVALUE 9223372036854775807
   START 1
   CACHE 1;
-ALTER TABLE public."PhoneNumber_id_seq"
+ALTER TABLE public.phonenumber_id_seq
   OWNER TO postgres;
 
--- Sequence: public."Policy_id_seq"
+-- Sequence: public.policy_id_seq
 
--- DROP SEQUENCE public."Policy_id_seq";
+-- DROP SEQUENCE public.policy_id_seq;
 
-CREATE SEQUENCE public."Policy_id_seq"
+CREATE SEQUENCE public.policy_id_seq
   INCREMENT 1
   MINVALUE 1
   MAXVALUE 9223372036854775807
   START 1
   CACHE 1;
-ALTER TABLE public."Policy_id_seq"
+ALTER TABLE public.policy_id_seq
   OWNER TO postgres;
 
--- Sequence: public."ReserveLine_id_seq"
+-- Sequence: public.reserveline_id_seq
 
--- DROP SEQUENCE public."ReserveLine_id_seq";
+-- DROP SEQUENCE public.reserveline_id_seq;
 
-CREATE SEQUENCE public."ReserveLine_id_seq"
+CREATE SEQUENCE public.reserveline_id_seq
   INCREMENT 1
   MINVALUE 1
   MAXVALUE 9223372036854775807
   START 1
   CACHE 1;
-ALTER TABLE public."ReserveLine_id_seq"
+ALTER TABLE public.reserveline_id_seq
   OWNER TO postgres;
 
--- Sequence: public."UserStatus_id_seq"
+-- Sequence: public.userstatus_id_seq
 
--- DROP SEQUENCE public."UserStatus_id_seq";
+-- DROP SEQUENCE public.userstatus_id_seq;
 
-CREATE SEQUENCE public."UserStatus_id_seq"
+CREATE SEQUENCE public.userstatus_id_seq
   INCREMENT 1
   MINVALUE 1
   MAXVALUE 9223372036854775807
   START 1
   CACHE 1;
-ALTER TABLE public."UserStatus_id_seq"
+ALTER TABLE public.userstatus_id_seq
   OWNER TO postgres;
 
--- Sequence: public."UserType_id_seq"
+-- Sequence: public.usertype_id_seq
 
--- DROP SEQUENCE public."UserType_id_seq";
+-- DROP SEQUENCE public.usertype_id_seq;
 
-CREATE SEQUENCE public."UserType_id_seq"
+CREATE SEQUENCE public.usertype_id_seq
   INCREMENT 1
   MINVALUE 1
   MAXVALUE 9223372036854775807
   START 1
   CACHE 1;
-ALTER TABLE public."UserType_id_seq"
+ALTER TABLE public.usertype_id_seq
   OWNER TO postgres;
