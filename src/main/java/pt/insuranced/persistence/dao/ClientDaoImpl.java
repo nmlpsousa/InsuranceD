@@ -18,6 +18,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.Optional;
 
 public class ClientDaoImpl implements ClientDao {
@@ -65,14 +66,19 @@ public class ClientDaoImpl implements ClientDao {
             PersonalIdentification personalIdentification = client.getPersonalIdentification();
             PhoneNumber phoneNumber = personalIdentification.getPhoneNumber();
             Address address = personalIdentification.getAddress();
+            Password password = client.getPassword();
 
             long addressId = insertAddress(connection, address);
             long phoneNumberId = insertPhoneNumber(connection, phoneNumber);
             long personalIdentificationId = insertPersonalIdentification(connection, personalIdentification, addressId, phoneNumberId);
+            long clientId = insertClient(connection, client, personalIdentificationId);
+            long passwordId = insertPassword(connection, password, clientId);
 
             LOGGER.info("Inserted Address ID is {}", addressId);
             LOGGER.info("Inserted Phone Number ID is {}", phoneNumberId);
             LOGGER.info("Inserted Personal Identification ID is {}", personalIdentificationId);
+            LOGGER.info("Inserted Client ID is {}", clientId);
+            LOGGER.info("Inserted Password ID is {}", passwordId);
 
             connection.commit();
         } catch (SQLException e) {
@@ -88,8 +94,45 @@ public class ClientDaoImpl implements ClientDao {
         return null;
     }
 
+    private long insertPassword(Connection connection, Password password, long clientId) throws SQLException, InsuranceDException {
+        PreparedStatement preparedStatement =
+                connection.prepareStatement("INSERT INTO public.password( password, userid, isactive) VALUES(?, ?, ?);  ", Statement.RETURN_GENERATED_KEYS);
+
+        preparedStatement.setString(1, password.getHashedPassword());
+        preparedStatement.setLong(2, clientId);
+        preparedStatement.setBoolean(3, true);
+
+        int generatedKeys = preparedStatement.executeUpdate();
+        if (generatedKeys == 0) {
+            throw new InsuranceDException("Error inserting Password into the DB.");
+        }
+
+        preparedStatement.getGeneratedKeys().next();
+        return preparedStatement.getGeneratedKeys().getLong("id");
+
+    }
+
+    private long insertClient(Connection connection, Client client, long personalIdentificationId) throws SQLException, InsuranceDException {
+        PreparedStatement preparedStatement = connection
+                .prepareStatement("INSERT INTO public.client( personalid, typeid, username, lastpasswordchangedate, statusid) VALUES(?, ?, ?, ?, ?); ",
+                        Statement.RETURN_GENERATED_KEYS);
+        preparedStatement.setLong(1, personalIdentificationId);
+        preparedStatement.setInt(2, client.getUserType().getCode());
+        preparedStatement.setString(3, client.getUsername());
+        preparedStatement.setDate(4, Date.valueOf(LocalDate.now()));
+        preparedStatement.setInt(5, client.getUserStatus().getCode());
+
+        int generatedKeys = preparedStatement.executeUpdate();
+        if (generatedKeys == 0) {
+            throw new InsuranceDException("Error inserting Client into the DB.");
+        }
+
+        preparedStatement.getGeneratedKeys().next();
+        return preparedStatement.getGeneratedKeys().getLong("id");
+    }
+
     private long insertPhoneNumber(Connection connection, PhoneNumber phoneNumber) throws SQLException, InsuranceDException {
-        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO public.\"PhoneNumber\"( prefix, \"number\") VALUES(?, ?);", Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO public.phonenumber( pref, num) VALUES(?, ?); ", Statement.RETURN_GENERATED_KEYS);
         preparedStatement.setString(1, phoneNumber.getPrefix());
         preparedStatement.setInt(2, phoneNumber.getNumber());
 
@@ -104,8 +147,10 @@ public class ClientDaoImpl implements ClientDao {
 
     private long insertPersonalIdentification(Connection connection, PersonalIdentification personalIdentification, long addressId, long phoneNumberId) throws SQLException,
             InsuranceDException {
-        PreparedStatement statement = connection.prepareStatement("INSERT INTO public.\"PersonalIdentification\"( \"firstName\", \"lastName\", \"dateOfBirth\", \"addressId\", "
-                + "\"identificationNo\", \"fiscalNumber\", \"phoneNumberId\") VALUES(?, ?, ?, ?, ?, ?, ?); ", Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement statement = connection.prepareStatement(
+                "INSERT INTO public.personalidentification( firstname, lastname, dateofbirth, addressid, identificationno, fiscalnumber, phonenumberid) VALUES(?, ?, ?, ?,"
+                        + " ?, ?, ?); ",
+                Statement.RETURN_GENERATED_KEYS);
 
         statement.setString(1, personalIdentification.getFirstName());
         statement.setString(2, personalIdentification.getLastName());
@@ -125,8 +170,9 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     private long insertAddress(Connection connection, Address address) throws SQLException, InsuranceDException {
-        PreparedStatement statement = connection.prepareStatement("INSERT INTO public.\"Address\"( \"addressLine1\", \"addressLine2\", city, \"postalCode\", \"countryId\") "
-                + "VALUES (?, ?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement statement = connection
+                .prepareStatement("INSERT INTO public.address( addressline1, addressline2, city, postalcode, countryid) VALUES(?, ?, ?, ?, ?); ",
+                        Statement.RETURN_GENERATED_KEYS);
 
         statement.setString(1, address.getAddressLine1());
         statement.setString(2, address.getAddressLine2());
