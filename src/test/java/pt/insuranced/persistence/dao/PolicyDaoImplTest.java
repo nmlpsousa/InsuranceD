@@ -50,6 +50,6 @@ public class PolicyDaoImplTest {
 	public void testGetPoliciesFromUser() throws Exception {
 		
 		PolicyDao policyDao = new PolicyDaoImpl();
-		policyDao.getPoliciesFromUser(1);
+		policyDao.getPoliciesFromUser(1); 
     }
 }

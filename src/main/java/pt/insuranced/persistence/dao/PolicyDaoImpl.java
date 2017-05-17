@@ -71,7 +71,7 @@ public class PolicyDaoImpl implements PolicyDao {
             } else {
                 closeConnection(connection);
             }
-        }
+        } 
 
         return Optional.ofNullable(policy);
     }
