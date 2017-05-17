@@ -1,10 +1,5 @@
 package pt.insuranced.persistence.dao;
 
-import pt.insuranced.models.Address;
-import pt.insuranced.models.Client;
-import pt.insuranced.models.Password;
-import pt.insuranced.models.PersonalIdentification;
-import pt.insuranced.models.PhoneNumber;
 import pt.insuranced.models.Policy;
 import pt.insuranced.persistence.connection.ConnectionManager;
 import pt.insuranced.persistence.dao.sdk.interfaces.PolicyDao;
@@ -16,13 +11,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,33 +24,55 @@ public class PolicyDaoImpl implements PolicyDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(PolicyDaoImpl.class);
 
     @Override
-    public Optional<Policy> get(int policyId) throws InsuranceDException {
-    	
-    	String query = "select * from public.\"Policy\" p where p.id = " + policyId + ';';
+    public Optional<Policy> get(long policyId) throws InsuranceDException {
+    	Connection connection = null;
+        Boolean previousAutoCommit = null;
         Policy policy = null;
+        try {
+            connection = ConnectionManager.getConnection();
+            previousAutoCommit = connection.getAutoCommit();
+            connection.setAutoCommit(false);
+            
+            PreparedStatement preparedStatement = connection.prepareStatement(
+        			"SELECT * FROM public.policy p WHERE p.id=?;");
+            
+            preparedStatement.setLong(1, policyId);
 
-        try (Connection connection = ConnectionManager.getConnection();
-                Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery(query)) {
-
+            ResultSet resultSet = preparedStatement.executeQuery();
             if (!resultSet.next()) {
-                // No policy found
-                return Optional.empty();
+            	LOGGER.info("There is no policy with the ID {}.", policyId);
+            	return Optional.empty();
             }
 
-            System.out.println("Id: " + resultSet.getString("id") + ", Username: " + resultSet.getString("username"));
-            int id = resultSet.getInt("id");
-            String username = resultSet.getString("username");
-            String password = resultSet.getString("password");
-            Password password1 = new Password(0, password);
-            int personalId = resultSet.getInt("personalId");
-            int typeId = resultSet.getInt("typeId");
-            //client = new Client(id, username, password1, null, null, null, null, null, null);
+            LocalDate startDate = resultSet.getDate("startdate").toLocalDate();
+            LocalDate endDate = resultSet.getDate("enddate").toLocalDate();
+            Long userId = resultSet.getLong("userid");
+            Double premium = resultSet.getDouble("premium");
+            
+            Policy.Builder builder = Policy.Builder.newBuilder();
+            builder.setId(policyId);
+            builder.setStartDate(startDate);
+            builder.setEndDate(endDate);
+            builder.setUserId(userId);
+            builder.setPremium(premium);
+            
+            policy = builder.build();
+            
+            LOGGER.info("Got Policy with ID {}: UserID={}, StartDate={}, EndDate={}, Premium={}.", 
+            		policyId, userId, startDate, endDate, premium);
+
+            connection.commit();
         } catch (SQLException e) {
-            System.out.println("Exception: " + e.getMessage());
-            System.out.println(ExceptionUtils.getStackTrace(e));
+            rollbackConnection(connection);
+            throw new InsuranceDException("Error connecting with the database.", e);
+        } finally {
+            if (previousAutoCommit != null) {
+                restoreAutoCommitAndCloseConnection(connection, previousAutoCommit);
+            } else {
+                closeConnection(connection);
+            }
         }
-    	
+
         return Optional.ofNullable(policy);
     }
 
@@ -89,7 +104,6 @@ public class PolicyDaoImpl implements PolicyDao {
     }
     
     // TODO: Not Implemented
-
 	@Override
     public Policy update(Policy policy) throws InsuranceDException {
 		return null;
@@ -97,13 +111,13 @@ public class PolicyDaoImpl implements PolicyDao {
 
 	// TODO: Not Implemented
     @Override
-    public List<Policy> getPoliciesFromUser(int userId) throws InsuranceDException {
+    public List<Policy> getPoliciesFromUser(long userId) throws InsuranceDException {
         return Collections.emptyList();
     }
 
     // TODO: Not Implemented
     @Override
-    public Optional<Policy> getExtendedPolicyInformation(int policyId) throws InsuranceDException {
+    public Optional<Policy> getExtendedPolicyInformation(long policyId) throws InsuranceDException {
         return null;
     }
     

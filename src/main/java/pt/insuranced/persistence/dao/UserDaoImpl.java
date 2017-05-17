@@ -25,7 +25,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Optional<AbstractUser> get(int userId) throws InsuranceDException {
+    public Optional<AbstractUser> get(long userId) throws InsuranceDException {
 
         return Optional.ofNullable(userMap.get(userId));
 

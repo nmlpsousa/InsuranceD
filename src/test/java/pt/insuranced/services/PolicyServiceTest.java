@@ -40,7 +40,6 @@ public class PolicyServiceTest {
     public static void setUp() {
         Policy exampleSimplePolicy1 = Policy.Builder.newBuilder()
                 .setId(0)
-                .setPolicyNo(100001)
                 .setStartDate(LocalDate.of(2016, 6, 1))
                 .setEndDate(LocalDate.of(2017, 5, 31))
                 .setPremium(521.79)
@@ -48,7 +47,6 @@ public class PolicyServiceTest {
 
         Policy exampleSimplePolicy2 = Policy.Builder.newBuilder()
                 .setId(1)
-                .setPolicyNo(100002)
                 .setStartDate(LocalDate.of(2016, 4, 1))
                 .setEndDate(LocalDate.of(2017, 3, 31))
                 .setPremium(323.59)
@@ -91,7 +89,6 @@ public class PolicyServiceTest {
 
         examplePolicyWithDetails = Policy.Builder.newBuilder()
                 .setId(0)
-                .setPolicyNo(100001)
                 .setStartDate(LocalDate.of(2016, 6, 1))
                 .setEndDate(LocalDate.of(2016, 5, 31))
                 .setPremium(521.79)

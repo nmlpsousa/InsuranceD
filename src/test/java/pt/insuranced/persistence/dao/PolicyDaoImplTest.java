@@ -11,6 +11,7 @@ import pt.insuranced.persistence.dao.sdk.interfaces.PolicyDao;
 public class PolicyDaoImplTest {
 
 	@Test
+	@Ignore
     public void testInsert() throws Exception {
         
 		Policy policy = new Policy();
@@ -21,5 +22,12 @@ public class PolicyDaoImplTest {
 
         PolicyDao policyDao = new PolicyDaoImpl();
         policyDao.insert(policy);
+    }
+	
+	@Test
+	public void testGet() throws Exception {
+
+        PolicyDao policyDao = new PolicyDaoImpl();
+        policyDao.get(1);
     }
 }

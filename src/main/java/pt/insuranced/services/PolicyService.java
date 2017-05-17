@@ -55,7 +55,7 @@ public class PolicyService {
     public String getPolicyDetails(String jsonInput) throws InsuranceDException {
         try {
             Policy policy = OBJECT_MAPPER.readValue(jsonInput, Policy.class);
-            int policyId = policy.getId();
+            long policyId = policy.getId();
 
             Optional<Policy> policyDetailsOptional = this.policyDao.getExtendedPolicyInformation(policyId);
             if (!policyDetailsOptional.isPresent()) {
