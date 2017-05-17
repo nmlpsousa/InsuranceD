@@ -3,12 +3,8 @@ package pt.insuranced.persistence.dao.sdk.interfaces;
 import pt.insuranced.models.Client;
 import pt.insuranced.sdk.exceptions.InsuranceDException;
 
-import java.util.Optional;
+import java.util.Collection;
 
-public interface ClientDao {
-    Optional<Client> get(int id) throws InsuranceDException;
-
-    Client insert(Client client) throws InsuranceDException;
-
-    Client update(Client client) throws InsuranceDException;
+public interface ClientDao extends GenericDao<Client> {
+    void bulkInsert(Collection<Client> clients) throws InsuranceDException;
 }
