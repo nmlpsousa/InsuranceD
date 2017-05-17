@@ -1,11 +1,19 @@
 package pt.insuranced.main;
 
-import pt.insuranced.sdk.enums.ClaimStatusEnum;
+import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
-        ClaimStatusEnum claimStatusEnum = ClaimStatusEnum.getClaimStatusByCode(2);
 
-        System.out.println(claimStatusEnum);
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        String s;
+        scanner.useDelimiter("\\n");
+
+        do {
+            System.out.println("Welcome Menu");
+            s = scanner.next();
+            String[] params = s.split(" ");
+            new cli(params);
+        } while (!s.equals(0));
     }
 }
