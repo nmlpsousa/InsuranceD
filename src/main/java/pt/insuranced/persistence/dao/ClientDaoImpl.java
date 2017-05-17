@@ -27,7 +27,7 @@ public class ClientDaoImpl implements ClientDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(ClientDaoImpl.class);
 
     @Override
-    public Optional<Client> get(int userId) throws InsuranceDException {
+    public Optional<Client> get(long userId) throws InsuranceDException {
         String query = "select * from public.\"Users\" where \"Users\".id = " + userId + ';';
         Client client = null;
 
