@@ -1,12 +1,19 @@
 package pt.insuranced.main;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.Scanner;
 
 public class Main {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) {
-        LOGGER.info("It works!");
+        Scanner scanner = new Scanner(System.in);
+        String s;
+        scanner.useDelimiter("\\n");
+
+        do {
+            System.out.println("Welcome Menu");
+            s = scanner.next();
+            String[] params = s.split(" ");
+            new cli(params);
+        } while (!s.equals(0));
     }
 }
