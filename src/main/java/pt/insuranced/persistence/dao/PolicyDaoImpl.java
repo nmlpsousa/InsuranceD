@@ -217,7 +217,7 @@ public class PolicyDaoImpl implements PolicyDao {
 
         int generatedKeys = preparedStatement.executeUpdate();
         if (generatedKeys == 0) {
-            throw new InsuranceDException("Error inserting Policy into the DB.");
+            throw new InsuranceDException("Error updating Policy into the DB.");
         }
 
         preparedStatement.getGeneratedKeys().next();

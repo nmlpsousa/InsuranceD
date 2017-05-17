@@ -81,7 +81,6 @@ public class PolicyServiceTest {
 
         Coverable coverable1 = Coverable.Builder.newBuilder()
                 .setId(0)
-                .setCoverableNo(320)
                 .setDescription("A house in the middle of the street")
                 .setPolicyId(0)
                 .setCoverageList(Arrays.asList(coverage1, coverage2))
