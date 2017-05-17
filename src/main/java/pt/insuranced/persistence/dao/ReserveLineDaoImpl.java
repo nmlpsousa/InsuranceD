@@ -9,7 +9,7 @@ import pt.insuranced.sdk.exceptions.InsuranceDException;
 public class ReserveLineDaoImpl implements ReserveLineDao {
 
 	@Override
-	public Optional<ReserveLine> get(int id) throws InsuranceDException {
+	public Optional<ReserveLine> get(long id) throws InsuranceDException {
 		return null;
 	}
 

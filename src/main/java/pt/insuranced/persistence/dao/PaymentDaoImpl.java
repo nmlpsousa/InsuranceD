@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public class PaymentDaoImpl implements PaymentDao {
     @Override
-    public Optional<Payment> get(int id) throws InsuranceDException {
+    public Optional<Payment> get(long id) throws InsuranceDException {
         return null;
     }
 

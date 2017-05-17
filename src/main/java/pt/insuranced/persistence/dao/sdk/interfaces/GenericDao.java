@@ -5,7 +5,7 @@ import pt.insuranced.sdk.exceptions.InsuranceDException;
 import java.util.Optional;
 
 public interface GenericDao<T> {
-    Optional<T> get(int id) throws InsuranceDException;
+    Optional<T> get(long id) throws InsuranceDException;
 
     T insert(T object) throws InsuranceDException;
 

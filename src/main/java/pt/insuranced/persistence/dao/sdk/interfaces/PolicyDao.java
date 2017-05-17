@@ -13,7 +13,7 @@ public interface PolicyDao extends GenericDao<Policy> {
      * @return a list of Policy objects
      * @throws InsuranceDException if an exception occurs while performing this action
      */
-    List<Policy> getPoliciesFromUser(int userId) throws InsuranceDException;
+    List<Policy> getPoliciesFromUser(long userId) throws InsuranceDException;
 
-    Optional<Policy> getExtendedPolicyInformation(int policyId) throws InsuranceDException;
+    Optional<Policy> getExtendedPolicyInformation(long policyId) throws InsuranceDException;
 }

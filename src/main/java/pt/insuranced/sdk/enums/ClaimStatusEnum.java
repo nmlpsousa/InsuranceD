@@ -4,15 +4,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum ClaimStatusEnum {
-    DRAFT(1),
-    VALIDATED(2),
-    PAYMENT(3),
-    PROCESSED(4);
+    DRAFT(1,"Draft"),
+    VALIDATED(2,"Validated"),
+    PAYMENT(3,"Payment"),
+    PROCESSED(4,"Processed");
 
     private final int code;
+    
+    private final String description;
 
-    private ClaimStatusEnum(int code) {
+    private ClaimStatusEnum(int code, String description) {
         this.code = code;
+        this.description = description;
     }
 
     private static Map<Integer, ClaimStatusEnum> enumValuesByCode;
@@ -26,6 +29,10 @@ public enum ClaimStatusEnum {
 
     public int getCode() {
         return this.code;
+    }
+    
+    public String getDescription() {
+        return description;
     }
 
     public static ClaimStatusEnum getClaimStatusByCode(int code) {

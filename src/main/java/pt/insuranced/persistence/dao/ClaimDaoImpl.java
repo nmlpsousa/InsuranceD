@@ -15,7 +15,7 @@ public class ClaimDaoImpl implements ClaimDao {
     }
 
     @Override
-    public Optional<Claim> get(int id) throws InsuranceDException {
+    public Optional<Claim> get(long id) throws InsuranceDException {
         return null;
     }
 
