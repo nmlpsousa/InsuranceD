@@ -64,7 +64,7 @@ public class ClientDaoImpl implements ClientDao {
             previousAutoCommit = connection.getAutoCommit();
             connection.setAutoCommit(false);
 
-            insertClient(client, connection);
+            prepareAndExecuteStatements(client, connection);
 
             connection.commit();
         } catch (SQLException e) {
@@ -80,7 +80,7 @@ public class ClientDaoImpl implements ClientDao {
         return null;
     }
 
-    private void insertClient(Client client, Connection connection) throws SQLException, InsuranceDException {
+    private void prepareAndExecuteStatements(Client client, Connection connection) throws SQLException, InsuranceDException {
         PersonalIdentification personalIdentification = client.getPersonalIdentification();
         PhoneNumber phoneNumber = personalIdentification.getPhoneNumber();
         Address address = personalIdentification.getAddress();
@@ -92,11 +92,11 @@ public class ClientDaoImpl implements ClientDao {
         long clientId = insertClient(connection, client, personalIdentificationId);
         long passwordId = insertPassword(connection, password, clientId);
 
-        LOGGER.info("Inserted Address ID is {}", addressId);
-        LOGGER.info("Inserted Phone Number ID is {}", phoneNumberId);
-        LOGGER.info("Inserted Personal Identification ID is {}", personalIdentificationId);
-        LOGGER.info("Inserted Client ID is {}", clientId);
-        LOGGER.info("Inserted Password ID is {}", passwordId);
+        LOGGER.debug("Inserted Address ID is {}", addressId);
+        LOGGER.debug("Inserted Phone Number ID is {}", phoneNumberId);
+        LOGGER.debug("Inserted Personal Identification ID is {}", personalIdentificationId);
+        LOGGER.debug("Inserted Client ID is {}", clientId);
+        LOGGER.debug("Inserted Password ID is {}", passwordId);
     }
 
     private long insertPassword(Connection connection, Password password, long clientId) throws SQLException, InsuranceDException {
@@ -233,18 +233,12 @@ public class ClientDaoImpl implements ClientDao {
             previousAutoCommit = connection.getAutoCommit();
             connection.setAutoCommit(false);
 
-            final Connection connection1 = connection;
-
-            clients.forEach(c -> {
-                try {
-                    insertClient(c, connection1);
-                    connection1.commit();
-                } catch (SQLException | InsuranceDException e) {
-                    LOGGER.warn("Error inserting Client during bulk insert", e);
-                }
-            });
-
-            connection.commit();
+            int i = 0;
+            for (Client client : clients) {
+                LOGGER.info("Inserting Client record {} of {}", ++i, clients.size());
+                prepareAndExecuteStatements(client, connection);
+                connection.commit();
+            }
         } catch (SQLException e) {
             rollbackConnection(connection);
             throw new InsuranceDException("Error connecting with the database.", e);
