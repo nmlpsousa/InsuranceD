@@ -58,14 +58,14 @@ public class PolicyServiceTest {
 
         Coverage coverage1 = Coverage.Builder.newBuilder()
                 .setId(2)
-                .setCoverageCode(76)
+                .setCoverableId(76)
                 .setDescription("Glass Coverage")
                 .setLimit(400.0)
                 .setPremium(16.73)
                 .build();
         Coverage coverage2 = Coverage.Builder.newBuilder()
                 .setId(7)
-                .setCoverageCode(43)
+                .setCoverableId(43)
                 .setDescription("Vandalism")
                 .setLimit(250.0)
                 .setPremium(21.98)
@@ -73,7 +73,7 @@ public class PolicyServiceTest {
 
         Coverage coverage3 = Coverage.Builder.newBuilder()
                 .setId(21)
-                .setCoverageCode(32)
+                .setCoverableId(32)
                 .setDescription("Personal Liability")
                 .setLimit(6_000_000.0)
                 .setPremium(76.01)
