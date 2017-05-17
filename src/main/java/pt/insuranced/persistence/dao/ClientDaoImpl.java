@@ -19,6 +19,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.Optional;
 
 public class ClientDaoImpl implements ClientDao {
@@ -63,22 +64,7 @@ public class ClientDaoImpl implements ClientDao {
             previousAutoCommit = connection.getAutoCommit();
             connection.setAutoCommit(false);
 
-            PersonalIdentification personalIdentification = client.getPersonalIdentification();
-            PhoneNumber phoneNumber = personalIdentification.getPhoneNumber();
-            Address address = personalIdentification.getAddress();
-            Password password = client.getPassword();
-
-            long addressId = insertAddress(connection, address);
-            long phoneNumberId = insertPhoneNumber(connection, phoneNumber);
-            long personalIdentificationId = insertPersonalIdentification(connection, personalIdentification, addressId, phoneNumberId);
-            long clientId = insertClient(connection, client, personalIdentificationId);
-            long passwordId = insertPassword(connection, password, clientId);
-
-            LOGGER.info("Inserted Address ID is {}", addressId);
-            LOGGER.info("Inserted Phone Number ID is {}", phoneNumberId);
-            LOGGER.info("Inserted Personal Identification ID is {}", personalIdentificationId);
-            LOGGER.info("Inserted Client ID is {}", clientId);
-            LOGGER.info("Inserted Password ID is {}", passwordId);
+            insertClient(client, connection);
 
             connection.commit();
         } catch (SQLException e) {
@@ -92,6 +78,25 @@ public class ClientDaoImpl implements ClientDao {
             }
         }
         return null;
+    }
+
+    private void insertClient(Client client, Connection connection) throws SQLException, InsuranceDException {
+        PersonalIdentification personalIdentification = client.getPersonalIdentification();
+        PhoneNumber phoneNumber = personalIdentification.getPhoneNumber();
+        Address address = personalIdentification.getAddress();
+        Password password = client.getPassword();
+
+        long addressId = insertAddress(connection, address);
+        long phoneNumberId = insertPhoneNumber(connection, phoneNumber);
+        long personalIdentificationId = insertPersonalIdentification(connection, personalIdentification, addressId, phoneNumberId);
+        long clientId = insertClient(connection, client, personalIdentificationId);
+        long passwordId = insertPassword(connection, password, clientId);
+
+        LOGGER.info("Inserted Address ID is {}", addressId);
+        LOGGER.info("Inserted Phone Number ID is {}", phoneNumberId);
+        LOGGER.info("Inserted Personal Identification ID is {}", personalIdentificationId);
+        LOGGER.info("Inserted Client ID is {}", clientId);
+        LOGGER.info("Inserted Password ID is {}", passwordId);
     }
 
     private long insertPassword(Connection connection, Password password, long clientId) throws SQLException, InsuranceDException {
@@ -217,5 +222,38 @@ public class ClientDaoImpl implements ClientDao {
     @Override
     public Client update(Client client) throws InsuranceDException {
         return null;
+    }
+
+    @Override
+    public void bulkInsert(Collection<Client> clients) throws InsuranceDException {
+        Connection connection = null;
+        Boolean previousAutoCommit = null;
+        try {
+            connection = ConnectionManager.getConnection();
+            previousAutoCommit = connection.getAutoCommit();
+            connection.setAutoCommit(false);
+
+            final Connection connection1 = connection;
+
+            clients.forEach(c -> {
+                try {
+                    insertClient(c, connection1);
+                    connection1.commit();
+                } catch (SQLException | InsuranceDException e) {
+                    LOGGER.warn("Error inserting Client during bulk insert", e);
+                }
+            });
+
+            connection.commit();
+        } catch (SQLException e) {
+            rollbackConnection(connection);
+            throw new InsuranceDException("Error connecting with the database.", e);
+        } finally {
+            if (previousAutoCommit != null) {
+                restoreAutoCommitAndCloseConnection(connection, previousAutoCommit);
+            } else {
+                closeConnection(connection);
+            }
+        }
     }
 }
