@@ -1,8 +1,8 @@
 package pt.insuranced.persistence.dao;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import pt.insuranced.models.Policy;
@@ -11,7 +11,6 @@ import pt.insuranced.persistence.dao.sdk.interfaces.PolicyDao;
 public class PolicyDaoImplTest {
 
 	@Test
-	@Ignore
     public void testInsert() throws Exception {
         
 		Policy policy = new Policy();
@@ -29,5 +28,28 @@ public class PolicyDaoImplTest {
 
         PolicyDao policyDao = new PolicyDaoImpl();
         policyDao.get(1);
+    }
+	
+	@Test
+	public void testUpdate() throws Exception {
+		
+		PolicyDao policyDao = new PolicyDaoImpl();
+		
+        Optional<Policy> pol = policyDao.get(1);
+        
+        if(pol.isPresent()) {
+        	Policy policy = pol.get();
+        	policy.setPremium(2000.0);
+        	policy.setEndDate(LocalDate.now().plusYears(1));
+        	
+        	policyDao.update(policy);
+        }
+    }
+	
+	@Test
+	public void testGetPoliciesFromUser() throws Exception {
+		
+		PolicyDao policyDao = new PolicyDaoImpl();
+		policyDao.getPoliciesFromUser(1);
     }
 }
