@@ -1,6 +1,5 @@
 package pt.insuranced.persistence.dao;
 
-import pt.insuranced.models.Coverable;
 import pt.insuranced.models.Coverage;
 import pt.insuranced.persistence.connection.ConnectionManager;
 import pt.insuranced.persistence.dao.sdk.interfaces.CoverageDao;

@@ -4,9 +4,7 @@ import java.util.Optional;
 
 import org.junit.Test;
 
-import pt.insuranced.models.Coverable;
 import pt.insuranced.models.Coverage;
-import pt.insuranced.persistence.dao.sdk.interfaces.CoverableDao;
 import pt.insuranced.persistence.dao.sdk.interfaces.CoverageDao;
 
 public class CoverageDaoImplTest {
