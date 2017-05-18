@@ -2,6 +2,8 @@ package pt.insuranced.persistence.dao;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import pt.insuranced.main.cli;
 import pt.insuranced.models.Address;
 import pt.insuranced.models.Client;
 import pt.insuranced.models.Password;
@@ -13,6 +15,7 @@ import pt.insuranced.sdk.enums.CountryEnum;
 import pt.insuranced.sdk.enums.UserStatusEnum;
 import pt.insuranced.sdk.enums.UserTypeEnum;
 import pt.insuranced.sdk.exceptions.InsuranceDException;
+import pt.insuranced.sdk.utils.EmailUtil;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -25,6 +28,9 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Properties;
+
+import javax.mail.Session;
 
 public class ClientDaoImpl implements ClientDao {
 
@@ -36,9 +42,11 @@ public class ClientDaoImpl implements ClientDao {
                 "SELECT usertype.id AS usertypeid, userstatus.id AS userstatusid, client.username, client.lastpasswordchangedate, client.id AS clientid, password.id AS "
                         + "passwordid, password.isactive, password.password, personalidentification.id AS personalid, personalidentification.fiscalnumber, personalidentification"
                         + ".identificationno, personalidentification.dateofbirth, personalidentification.lastname, personalidentification.firstname, address.addressline1, "
-                        + "address.addressline2, address.city, address.postalcode, address.id AS addressid, phonenumber.id AS phonenumberid, phonenumber.pref, phonenumber.num, "
-                        + "countries.id AS countryid FROM public.client, public.usertype, public.userstatus, public.personalidentification, public.address, public.phonenumber, "
-                        + "public.countries, public.password WHERE client.personalid = personalidentification.id AND usertype.id = client.typeid AND userstatus.id = client"
+                        + "personalidentification.email, address.addressline2, address.city, address.postalcode, address.id AS addressid, phonenumber.id AS phonenumberid, "
+                        + "phonenumber.pref, phonenumber.num, countries.id AS countryid " +
+                "FROM public.client, public.usertype, public.userstatus, public.personalidentification, public.address, public.phonenumber, "
+                        + "public.countries, public.password " +
+                "WHERE client.personalid = personalidentification.id AND usertype.id = client.typeid AND userstatus.id = client"
                         + ".statusid AND personalidentification.addressid = address.id AND phonenumber.id = personalidentification.phonenumberid AND countries.id = address"
                         + ".countryid AND password.userid = client.id AND password.isactive = TRUE AND client.id = ?; ";
         ResultSet resultSet = null;
@@ -79,6 +87,7 @@ public class ClientDaoImpl implements ClientDao {
             LocalDate dateOfBirth = resultSet.getDate("dateofbirth").toLocalDate();
             String identificationNo = resultSet.getString("identificationno");
             String fiscalNo = resultSet.getString("fiscalnumber");
+            String email = resultSet.getString("email");
             String addressLine1 = resultSet.getString("addressline1");
             String addressLine2 = resultSet.getString("addressline2");
             String city = resultSet.getString("city");
@@ -100,7 +109,6 @@ public class ClientDaoImpl implements ClientDao {
 
             Address address = new Address(addressId, addressLine1, addressLine2, city, postalCode, countryEnum);
             PhoneNumber phoneNumber1 = new PhoneNumber(phoneNumberId, phonePrefix, phoneNumber);
-            // TODO Email is missing
             PersonalIdentification personalIdentification = PersonalIdentification.Builder.newBuilder(personalIdentificationid)
                     .setIdentificationNumber(identificationNo)
                     .setAddress(address)
@@ -108,6 +116,7 @@ public class ClientDaoImpl implements ClientDao {
                     .setFirstName(firstName)
                     .setLastName(lastName)
                     .setFiscalNumber(fiscalNo)
+                    .setEmail(email)
                     .setPhoneNumber(phoneNumber1)
                     .build();
 
@@ -141,6 +150,7 @@ public class ClientDaoImpl implements ClientDao {
             connection.setAutoCommit(false);
 
             prepareAndExecuteStatements(client, connection);
+            sendEmail(client);
 
             connection.commit();
         } catch (SQLException e) {
@@ -155,7 +165,22 @@ public class ClientDaoImpl implements ClientDao {
         return null;
     }
 
-    private void prepareAndExecuteStatements(Client client, Connection connection) throws SQLException, InsuranceDException {
+    private void sendEmail(Client client) {
+    	
+    	LOGGER.debug("Sending email to client {}...", client.getUsername());
+
+	    String smtpHostServer = "ptsmtp.atrema.deloitte.com";
+	    
+	    Properties props = System.getProperties();
+
+	    props.put("mail.smtp.host", smtpHostServer);
+
+	    Session session = Session.getInstance(props, null);
+
+	    EmailUtil.sendWelcomeEmail(session, client);
+	}
+
+	private void prepareAndExecuteStatements(Client client, Connection connection) throws SQLException, InsuranceDException {
         PersonalIdentification personalIdentification = client.getPersonalIdentification();
         PhoneNumber phoneNumber = personalIdentification.getPhoneNumber();
         Address address = personalIdentification.getAddress();
@@ -228,9 +253,8 @@ public class ClientDaoImpl implements ClientDao {
     private long insertPersonalIdentification(Connection connection, PersonalIdentification personalIdentification, long addressId, long phoneNumberId) throws SQLException,
             InsuranceDException {
         PreparedStatement statement = connection.prepareStatement(
-                "INSERT INTO public.personalidentification( firstname, lastname, dateofbirth, addressid, identificationno, fiscalnumber, phonenumberid) VALUES(?, ?, ?, ?,"
-                        + " ?, ?, ?); ",
-                Statement.RETURN_GENERATED_KEYS);
+                "INSERT INTO public.personalidentification( firstname, lastname, dateofbirth, addressid, identificationno, fiscalnumber, phonenumberid, email) " +
+                " VALUES(?, ?, ?, ?, ?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
 
         statement.setString(1, personalIdentification.getFirstName());
         statement.setString(2, personalIdentification.getLastName());
@@ -239,6 +263,7 @@ public class ClientDaoImpl implements ClientDao {
         statement.setString(5, personalIdentification.getIdentificationNumber());
         statement.setString(6, personalIdentification.getFiscalNumber());
         statement.setLong(7, phoneNumberId);
+        statement.setString(8, personalIdentification.getEmail());
 
         int generatedKeys = statement.executeUpdate();
         if (generatedKeys == 0) {

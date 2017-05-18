@@ -91,6 +91,7 @@ CREATE TABLE public.personalidentification
   fiscalnumber character varying,
   id bigint NOT NULL DEFAULT nextval('personalidentification_id_seq'::regclass),
   phonenumberid bigint,
+  email character varying,
   CONSTRAINT pk_personalidentification PRIMARY KEY (id)
 )
 WITH (

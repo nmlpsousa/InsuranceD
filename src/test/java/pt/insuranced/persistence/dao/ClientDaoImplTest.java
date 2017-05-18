@@ -18,7 +18,6 @@ import java.util.Optional;
 public class ClientDaoImplTest {
 
     @Test
-    @Ignore
     public void testGet() throws Exception {
         ClientDao clientDao = new ClientDaoImpl();
         Optional<Client> clientOptional = clientDao.get(1L);
@@ -26,15 +25,14 @@ public class ClientDaoImplTest {
     }
 
     @Test
-    @Ignore
     public void testInsert() throws Exception {
         Client client = new Client();
-        client.setUsername("abc");
+        client.setUsername("nsousa");
 
         PersonalIdentification personalIdentification = new PersonalIdentification();
         Address address = new Address();
-        address.setAddressLine1("diaojdpoia");
-        address.setCity("Lisboa");
+        address.setAddressLine1("Av. da Boavista");
+        address.setCity("Porto");
         address.setCountry(CountryEnum.PT);
 
         PhoneNumber phoneNumber = new PhoneNumber();
@@ -46,9 +44,10 @@ public class ClientDaoImplTest {
         personalIdentification.setDateOfBirth(LocalDate.now());
         personalIdentification.setFirstName("Nuno");
         personalIdentification.setLastName("Sousa");
+        personalIdentification.setEmail("nsousa@deloitte.pt");
 
         Password password = new Password();
-        password.setHashedPassword("hdsahfsaf");
+        password.setHashedPassword("password");
         client.setPassword(password);
 
         client.setUserType(UserTypeEnum.CLIENT);
