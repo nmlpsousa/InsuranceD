@@ -9,6 +9,6 @@ public final class ConnectionManager {
     }
 
     public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/InsuranceD", "postgres", "postgres");
+        return DriverManager.getConnection("jdbc:postgresql://localhost:5432/InsuranceD", "postgres", "admin");
     }
 }
