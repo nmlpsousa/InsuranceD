@@ -36,7 +36,7 @@ public class PaymentServiceTest {
                         "Gus",
                         100.0,
                         PaymentStatusEnum.CLOSED
-                        );
+                );
             }
         };
 
@@ -46,8 +46,8 @@ public class PaymentServiceTest {
 
         fail("The test should have thrown an exception, since the payment is invalid.");
     }
-	
-	@Test
+
+    @Test
     public void testSubmitPaymentPass() throws InsuranceDException {
 
         new MockUp<PaymentDaoImpl>() {
@@ -59,7 +59,7 @@ public class PaymentServiceTest {
                         "Gus",
                         100.0,
                         PaymentStatusEnum.OPEN
-                        );
+                );
             }
         };
 

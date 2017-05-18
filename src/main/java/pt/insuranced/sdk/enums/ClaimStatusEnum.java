@@ -4,13 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum ClaimStatusEnum {
-    DRAFT(1,"Draft"),
-    VALIDATED(2,"Validated"),
-    PAYMENT(3,"Payment"),
-    PROCESSED(4,"Processed");
+    DRAFT(1, "Draft"),
+    VALIDATED(2, "Validated"),
+    PAYMENT(3, "Payment"),
+    PROCESSED(4, "Processed");
 
     private final long code;
-    
+
     private final String description;
 
     private ClaimStatusEnum(long code, String description) {
@@ -30,7 +30,7 @@ public enum ClaimStatusEnum {
     public long getCode() {
         return this.code;
     }
-    
+
     public String getDescription() {
         return description;
     }

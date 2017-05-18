@@ -38,7 +38,7 @@ public class UserServiceTest {
         exampleClient = Client.Builder.newBuilder()
                 .setId(0L)
                 .setUsername("nmlpsousa")
-                .setPassword(new Password(0, "pass"))
+                .setPassword(new Password(0L, "pass"))
                 .setLastPasswordChangeDate(LocalDate.of(2017, 1, 30))
                 .setUserStatus(UserStatusEnum.PENDING)
                 .setUserType(UserTypeEnum.CLIENT)

@@ -73,9 +73,9 @@ public class Claim {
     public void setCoverableId(long coverableId) {
         this.coverableId = coverableId;
     }
-    
+
     public static final class Builder {
-    	private long id;
+        private long id;
 
         private String description;
 
@@ -103,7 +103,7 @@ public class Claim {
             this.description = description;
             return this;
         }
-        
+
         public Builder setIncidentDate(LocalDate incidentDate) {
             this.incidentDate = incidentDate;
             return this;
@@ -126,20 +126,18 @@ public class Claim {
 
         public Claim build() {
             return new Claim(this.id, this.description, this.incidentDate,
-            		          this.status, this.reserveLine, this.coverableId);
+                    this.status, this.reserveLine, this.coverableId);
         }
     }
-    
-    public static Comparator<Claim> getCompByDate()
-    {   
-     Comparator<Claim> comp = new Comparator<Claim>(){
-         @Override
-         public int compare(Claim c1, Claim c2)
-         {
-             return c2.getIncidentDate().compareTo(c1.getIncidentDate());
-         }        
-     };
-     return comp;
+
+    public static Comparator<Claim> getCompByDate() {
+        Comparator<Claim> comp = new Comparator<Claim>() {
+            @Override
+            public int compare(Claim c1, Claim c2) {
+                return c2.getIncidentDate().compareTo(c1.getIncidentDate());
+            }
+        };
+        return comp;
     }
-    
+
 }

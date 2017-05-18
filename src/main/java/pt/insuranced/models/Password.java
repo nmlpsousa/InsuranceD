@@ -1,14 +1,14 @@
 package pt.insuranced.models;
 
 public class Password {
-    private int id;
+    private Long id;
 
     private String hashedPassword;
 
     public Password() {
     }
 
-    public Password(int id, String hashedPassword) {
+    public Password(Long id, String hashedPassword) {
         this.id = id;
         this.hashedPassword = hashedPassword;
     }
@@ -21,7 +21,7 @@ public class Password {
         this.hashedPassword = hashedPassword;
     }
 
-    public int getId() {
+    public Long getId() {
         return this.id;
     }
 

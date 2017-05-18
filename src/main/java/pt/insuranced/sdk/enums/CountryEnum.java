@@ -15,11 +15,11 @@ public enum CountryEnum {
 
     private final String abbreviation;
 
-    private static Map<Long,CountryEnum> enumByCode = new HashMap<>(10);
+    private static Map<Long, CountryEnum> enumByCode = new HashMap<>(10);
 
     static {
         for (CountryEnum countryEnum : CountryEnum.values()) {
-            enumByCode.put(countryEnum.getCode(),countryEnum);
+            enumByCode.put(countryEnum.getCode(), countryEnum);
         }
     }
 
