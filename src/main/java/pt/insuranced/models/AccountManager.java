@@ -9,7 +9,7 @@ import java.util.List;
 public class AccountManager extends AbstractUser {
     private int employeeNo;
 
-    public AccountManager(int id, String username, Password password, PersonalIdentification personalIdentification, List<Password> oldPasswords,
+    public AccountManager(Long id, String username, Password password, PersonalIdentification personalIdentification, List<Password> oldPasswords,
             LocalDate lastPasswordChangeDate, UserTypeEnum userType, UserStatusEnum userStatus, int employeeNo) {
         super(id, username, password, personalIdentification, oldPasswords, lastPasswordChangeDate, userType, userStatus);
         this.employeeNo = employeeNo;
@@ -20,7 +20,7 @@ public class AccountManager extends AbstractUser {
     }
 
     public static final class Builder {
-        private int id;
+        private Long id;
 
         private int employeeNo;
 
@@ -45,7 +45,7 @@ public class AccountManager extends AbstractUser {
             return new Builder();
         }
 
-        public Builder setId(int id) {
+        public Builder setId(Long id) {
             this.id = id;
             return this;
         }

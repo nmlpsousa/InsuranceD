@@ -4,36 +4,36 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum CountryEnum {
-    PT(1, "Portugal", "PT"),
-    ES(2, "Spain", "ES"),
-    US(3, "United Status", "US"),
-    FR(4, "France", "FR");
+    PT(1L, "Portugal", "PT"),
+    ES(2L, "Spain", "ES"),
+    US(3L, "United Status", "US"),
+    FR(4L, "France", "FR");
 
-    private final int code;
+    private final Long code;
 
     private final String description;
 
     private final String abbreviation;
 
-    private static Map<Integer,CountryEnum> enumByInteger = new HashMap<>(10);
+    private static Map<Long,CountryEnum> enumByCode = new HashMap<>(10);
 
     static {
         for (CountryEnum countryEnum : CountryEnum.values()) {
-            enumByInteger.put(countryEnum.getCode(),countryEnum);
+            enumByCode.put(countryEnum.getCode(),countryEnum);
         }
     }
 
-    private CountryEnum(int code, String description, String abbreviation) {
+    CountryEnum(Long code, String description, String abbreviation) {
         this.code = code;
         this.description = description;
         this.abbreviation = abbreviation;
     }
 
-    public static CountryEnum getCountryByCode(Integer code) {
-        return enumByInteger.get(code);
+    public static CountryEnum getCountryByCode(Long code) {
+        return enumByCode.get(code);
     }
 
-    public int getCode() {
+    public Long getCode() {
         return this.code;
     }
 

@@ -14,32 +14,17 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public AbstractUser insert(AbstractUser user) throws InsuranceDException {
-
-        if (userMap.containsKey(user.getId())) {
-            throw new InsuranceDException("Cannot insert user. Duplicated keys.");
-        }
-
-        userMap.put(user.getId(), user);
-
-        return user;
+        return null;
     }
 
     @Override
     public Optional<AbstractUser> get(long userId) throws InsuranceDException {
-
-        return Optional.ofNullable(userMap.get(userId));
-
+        return null;
     }
 
     @Override
     public AbstractUser update(AbstractUser user) throws InsuranceDException {
-
-        if (userMap.containsKey(user.getId())) {
-            userMap.put(user.getId(), user);
-            return user;
-        }
-
-        throw new InsuranceDException("Trying to update a user that doesn't exist.");
+        return null;
     }
 
 }

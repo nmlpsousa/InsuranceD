@@ -116,13 +116,4 @@ public class FileImportService {
 
         return client;
     }
-
-    private static void insertClientInDb(Client client) {
-        ClientDao clientDao = new ClientDaoImpl();
-        try {
-            clientDao.insert(client);
-        } catch (InsuranceDException e) {
-            LOGGER.error("Error inserting client into DB", e);
-        }
-    }
 }

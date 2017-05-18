@@ -36,7 +36,7 @@ public class UserServiceTest {
     @Before
     public void setUp() {
         exampleClient = Client.Builder.newBuilder()
-                .setId(0)
+                .setId(0L)
                 .setUsername("nmlpsousa")
                 .setPassword(new Password(0, "pass"))
                 .setLastPasswordChangeDate(LocalDate.of(2017, 1, 30))
@@ -76,7 +76,7 @@ public class UserServiceTest {
             String response = userService.getClientDetails(jsonInput);
             Client retrievedClient = OBJECT_MAPPER.readValue(response, Client.class);
 
-            assertEquals(0, retrievedClient.getId());
+            assertEquals(0L, retrievedClient.getId().longValue());
             assertNull(retrievedClient.getPassword());
         } catch (InsuranceDException | IOException exception) {
             fail(exception.getMessage());

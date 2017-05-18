@@ -1,7 +1,7 @@
 package pt.insuranced.models;
 
 public class PhoneNumber {
-    private String id;
+    private Long id;
 
     private String prefix;
 
@@ -10,7 +10,7 @@ public class PhoneNumber {
     public PhoneNumber() {
     }
 
-    public PhoneNumber(String id, String prefix, int number) {
+    public PhoneNumber(Long id, String prefix, int number) {
         this.id = id;
         this.prefix = prefix;
         this.number = number;
@@ -32,7 +32,7 @@ public class PhoneNumber {
         this.number = number;
     }
 
-    public String getId() {
+    public Long getId() {
         return this.id;
     }
 

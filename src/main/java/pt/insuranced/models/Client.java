@@ -1,5 +1,6 @@
 package pt.insuranced.models;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import pt.insuranced.sdk.enums.UserStatusEnum;
 import pt.insuranced.sdk.enums.UserTypeEnum;
 
@@ -13,7 +14,7 @@ public class Client extends AbstractUser {
         super();
     }
 
-    public Client(int id, String username, Password password, PersonalIdentification personalIdentification, List<Password> oldPasswords, LocalDate lastPasswordChangeDate,
+    public Client(Long id, String username, Password password, PersonalIdentification personalIdentification, List<Password> oldPasswords, LocalDate lastPasswordChangeDate,
             UserTypeEnum userType, UserStatusEnum userStatus, List<Policy> policyList) {
         super(id, username, password, personalIdentification, oldPasswords, lastPasswordChangeDate, userType, userStatus);
         this.policyList = policyList;
@@ -27,8 +28,23 @@ public class Client extends AbstractUser {
         this.policyList = policyList;
     }
 
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("id", getId())
+                .append("username", getUsername())
+                .append("password", getPassword())
+                .append("personalIdentification", getPersonalIdentification())
+                .append("oldPasswords", getOldPasswords())
+                .append("lastPasswordChangeDate", getLastPasswordChangeDate())
+                .append("userType", getUserType())
+                .append("userStatus", getUserStatus())
+                .append("policyList", this.policyList)
+                .toString();
+    }
+
     public static final class Builder {
-        private int id;
+        private Long id;
 
         private List<Policy> policyList;
 
@@ -53,7 +69,7 @@ public class Client extends AbstractUser {
             return new Builder();
         }
 
-        public Builder setId(int id) {
+        public Builder setId(Long id) {
             this.id = id;
             return this;
         }

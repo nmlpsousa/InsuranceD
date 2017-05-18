@@ -1,10 +1,7 @@
 package pt.insuranced.persistence.dao;
 
-import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import pt.insuranced.models.Address;
 import pt.insuranced.models.Client;
 import pt.insuranced.models.Password;
@@ -18,9 +15,15 @@ import pt.insuranced.sdk.enums.UserTypeEnum;
 import java.time.LocalDate;
 import java.util.Optional;
 
-import static org.junit.Assert.fail;
-
 public class ClientDaoImplTest {
+
+    @Test
+    @Ignore
+    public void testGet() throws Exception {
+        ClientDao clientDao = new ClientDaoImpl();
+        Optional<Client> clientOptional = clientDao.get(2L);
+        clientOptional.ifPresent(System.out::println);
+    }
 
     @Test
     @Ignore

@@ -3,7 +3,7 @@ package pt.insuranced.models;
 import java.time.LocalDate;
 
 public class PersonalIdentification {
-    private int id;
+    private Long id;
 
     private String firstName;
 
@@ -24,7 +24,7 @@ public class PersonalIdentification {
     public PersonalIdentification() {
     }
 
-    public PersonalIdentification(int id, String firstName, String lastName, LocalDate dateOfBirth, PhoneNumber phoneNumber, Address address, String email,
+    public PersonalIdentification(Long id, String firstName, String lastName, LocalDate dateOfBirth, PhoneNumber phoneNumber, Address address, String email,
             String identificationNumber, String fiscalNumber) {
         this.id = id;
         this.firstName = firstName;
@@ -101,12 +101,12 @@ public class PersonalIdentification {
         this.fiscalNumber = fiscalNumber;
     }
 
-    public int getId() {
+    public Long getId() {
         return this.id;
     }
 
     public static final class Builder {
-        private int id;
+        private Long id;
 
         private String firstName;
 
@@ -124,11 +124,11 @@ public class PersonalIdentification {
 
         private String fiscalNumber;
 
-        private Builder(int id) {
+        private Builder(Long id) {
             this.id = id;
         }
 
-        public static Builder newBuilder(int id) {
+        public static Builder newBuilder(Long id) {
             return new Builder(id);
         }
 
