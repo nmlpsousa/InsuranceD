@@ -4,31 +4,31 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum UserTypeEnum {
-    CLIENT(1, "Client"),
-    ACCOUNT_MANAGER(2, "Account Manager");
+    CLIENT(1L, "Client"),
+    ACCOUNT_MANAGER(2L, "Account Manager");
 
-    private final int code;
+    private final Long code;
 
     private final String userType;
 
-    private static Map<Integer, UserTypeEnum> enumByInteger = new HashMap<>(10);
+    private static Map<Long, UserTypeEnum> enumByCode = new HashMap<>(10);
 
     static {
         for (UserTypeEnum typeEnum : UserTypeEnum.values()) {
-            enumByInteger.put(typeEnum.getCode(),typeEnum);
+            enumByCode.put(typeEnum.getCode(), typeEnum);
         }
     }
 
-    private UserTypeEnum(int code, String userType) {
+    UserTypeEnum(Long code, String userType) {
         this.code = code;
         this.userType = userType;
     }
 
-    public static UserTypeEnum getTypeByCode(Integer code) {
-        return enumByInteger.get(code);
+    public static UserTypeEnum getTypeByCode(Long code) {
+        return enumByCode.get(code);
     }
 
-    public int getCode() {
+    public Long getCode() {
         return this.code;
     }
 

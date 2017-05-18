@@ -9,16 +9,16 @@ public enum ClaimStatusEnum {
     PAYMENT(3,"Payment"),
     PROCESSED(4,"Processed");
 
-    private final int code;
+    private final long code;
     
     private final String description;
 
-    private ClaimStatusEnum(int code, String description) {
+    private ClaimStatusEnum(long code, String description) {
         this.code = code;
         this.description = description;
     }
 
-    private static Map<Integer, ClaimStatusEnum> enumValuesByCode;
+    private static Map<Long, ClaimStatusEnum> enumValuesByCode;
 
     static {
         enumValuesByCode = new HashMap<>(ClaimStatusEnum.values().length);
@@ -27,7 +27,7 @@ public enum ClaimStatusEnum {
         }
     }
 
-    public int getCode() {
+    public long getCode() {
         return this.code;
     }
     
@@ -35,7 +35,7 @@ public enum ClaimStatusEnum {
         return description;
     }
 
-    public static ClaimStatusEnum getClaimStatusByCode(int code) {
+    public static ClaimStatusEnum getClaimStatusByCode(long code) {
         return enumValuesByCode.get(code);
     }
 }

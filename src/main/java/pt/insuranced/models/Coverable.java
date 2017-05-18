@@ -4,9 +4,7 @@ import java.util.List;
 
 public class Coverable {
 
-    private int id;
-
-    private int coverableNo;
+    private long id;
 
     private String description;
 
@@ -14,26 +12,17 @@ public class Coverable {
 
     private List<Coverage> coverageList;
 
-    private int policyId;
+    private long policyId;
 
     public Coverable() {
     }
 
-    public Coverable(int id, int coverableNo, String description, List<Claim> claimList, List<Coverage> coverageList, int policyId) {
+    public Coverable(long id, String description, List<Claim> claimList, List<Coverage> coverageList, long policyId) {
         this.id = id;
-        this.coverableNo = coverableNo;
         this.description = description;
         this.claimList = claimList;
         this.coverageList = coverageList;
         this.policyId = policyId;
-    }
-
-    public int getCoverableNo() {
-        return this.coverableNo;
-    }
-
-    public void setCoverableNo(int coverableNo) {
-        this.coverableNo = coverableNo;
     }
 
     public String getDescription() {
@@ -60,22 +49,20 @@ public class Coverable {
         this.coverageList = coverageList;
     }
 
-    public int getId() {
+    public long getId() {
         return this.id;
     }
 
-    public int getPolicyId() {
+    public long getPolicyId() {
         return this.policyId;
     }
 
-    public void setPolicyId(int policyId) {
+    public void setPolicyId(long policyId) {
         this.policyId = policyId;
     }
 
     public static final class Builder {
-        private int id;
-
-        private int coverableNo;
+        private long id;
 
         private String description;
 
@@ -83,7 +70,7 @@ public class Coverable {
 
         private List<Coverage> coverageList;
 
-        private int policyId;
+        private long policyId;
 
         private Builder() {
         }
@@ -92,13 +79,8 @@ public class Coverable {
             return new Builder();
         }
 
-        public Builder setId(int id) {
+        public Builder setId(long id) {
             this.id = id;
-            return this;
-        }
-
-        public Builder setCoverableNo(int coverableNo) {
-            this.coverableNo = coverableNo;
             return this;
         }
 
@@ -117,13 +99,13 @@ public class Coverable {
             return this;
         }
 
-        public Builder setPolicyId(int policyId) {
+        public Builder setPolicyId(long policyId) {
             this.policyId = policyId;
             return this;
         }
 
         public Coverable build() {
-            return new Coverable(this.id, this.coverableNo, this.description, this.claimList, this.coverageList, this.policyId);
+            return new Coverable(this.id, this.description, this.claimList, this.coverageList, this.policyId);
         }
     }
 }

@@ -1,9 +1,9 @@
 package pt.insuranced.models;
 
 public class Coverage {
-    private int id;
+    private long id;
 
-    private int coverageCode;
+    private long coverableId;
 
     private Double limit;
 
@@ -14,20 +14,20 @@ public class Coverage {
     public Coverage() {
     }
 
-    public Coverage(int id, int coverageCode, Double limit, Double premium, String description) {
+    public Coverage(long id, long coverableId, Double limit, Double premium, String description) {
         this.id = id;
-        this.coverageCode = coverageCode;
+        this.coverableId = coverableId;
         this.limit = limit;
         this.premium = premium;
         this.description = description;
     }
 
-    public int getCoverageCode() {
-        return this.coverageCode;
+    public long getCoverableId() {
+        return this.coverableId;
     }
 
-    public void setCoverageCode(int coverageCode) {
-        this.coverageCode = coverageCode;
+    public void setCoverableId(long coverableId) {
+        this.coverableId = coverableId;
     }
 
     public Double getLimit() {
@@ -54,14 +54,14 @@ public class Coverage {
         this.description = description;
     }
 
-    public int getId() {
+    public long getId() {
         return this.id;
     }
 
     public static final class Builder {
-        private int id;
+        private long id;
 
-        private int coverageCode;
+        private long coverableId;
 
         private Double limit;
 
@@ -76,13 +76,13 @@ public class Coverage {
             return new Builder();
         }
 
-        public Builder setId(int id) {
+        public Builder setId(long id) {
             this.id = id;
             return this;
         }
 
-        public Builder setCoverageCode(int coverageCode) {
-            this.coverageCode = coverageCode;
+        public Builder setCoverableId(long coverableId) {
+            this.coverableId = coverableId;
             return this;
         }
 
@@ -102,7 +102,7 @@ public class Coverage {
         }
 
         public Coverage build() {
-            return new Coverage(this.id, this.coverageCode, this.limit, this.premium, this.description);
+            return new Coverage(this.id, this.coverableId, this.limit, this.premium, this.description);
         }
     }
 }

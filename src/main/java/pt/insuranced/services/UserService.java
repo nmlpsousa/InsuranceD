@@ -30,7 +30,7 @@ public class UserService {
     public String getClientDetails(String jsonInput) throws InsuranceDException {
         try {
             Client client = OBJECT_MAPPER.readValue(jsonInput, Client.class);
-            int userId = client.getId();
+            Long userId = client.getId();
 
             Optional<AbstractUser> retrievedUserOptional = this.userDao.get(userId);
             if (!retrievedUserOptional.isPresent()) {

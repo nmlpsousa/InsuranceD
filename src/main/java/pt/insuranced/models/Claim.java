@@ -6,9 +6,7 @@ import java.time.LocalDate;
 import java.util.Comparator;
 
 public class Claim {
-    private int id;
-
-    private int claimNo;
+    private long id;
 
     private String description;
 
@@ -18,26 +16,18 @@ public class Claim {
 
     private ReserveLine reserveLine;
 
-    private int coverableId;
+    private long coverableId;
 
     public Claim() {
     }
 
-    public Claim(int id, int claimNo, String description, LocalDate incidentDate, ClaimStatusEnum status, ReserveLine reserveLine) {
+    public Claim(long id, String description, LocalDate incidentDate, ClaimStatusEnum status, ReserveLine reserveLine, long coverableId) {
         this.id = id;
-        this.claimNo = claimNo;
         this.description = description;
         this.incidentDate = incidentDate;
         this.status = status;
         this.reserveLine = reserveLine;
-    }
-
-    public int getClaimNo() {
-        return this.claimNo;
-    }
-
-    public void setClaimNo(int claimNo) {
-        this.claimNo = claimNo;
+        this.coverableId = coverableId;
     }
 
     public String getDescription() {
@@ -72,16 +62,72 @@ public class Claim {
         this.reserveLine = reserveLine;
     }
 
-    public int getId() {
+    public long getId() {
         return this.id;
     }
 
-    public int getCoverableId() {
+    public long getCoverableId() {
         return coverableId;
     }
 
-    public void setCoverableId(int coverableId) {
+    public void setCoverableId(long coverableId) {
         this.coverableId = coverableId;
+    }
+    
+    public static final class Builder {
+    	private long id;
+
+        private String description;
+
+        private LocalDate incidentDate;
+
+        private ClaimStatusEnum status;
+
+        private ReserveLine reserveLine;
+
+        private long coverableId;
+
+        private Builder() {
+        }
+
+        public static Builder newBuilder() {
+            return new Builder();
+        }
+
+        public Builder setId(long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setDescription(String description) {
+            this.description = description;
+            return this;
+        }
+        
+        public Builder setIncidentDate(LocalDate incidentDate) {
+            this.incidentDate = incidentDate;
+            return this;
+        }
+
+        public Builder setStatus(ClaimStatusEnum status) {
+            this.status = status;
+            return this;
+        }
+
+        public Builder setReserveLine(ReserveLine reserveLine) {
+            this.reserveLine = reserveLine;
+            return this;
+        }
+
+        public Builder setCoverableId(long coverableId) {
+            this.coverableId = coverableId;
+            return this;
+        }
+
+        public Claim build() {
+            return new Claim(this.id, this.description, this.incidentDate,
+            		          this.status, this.reserveLine, this.coverableId);
+        }
     }
     
     public static Comparator<Claim> getCompByDate()

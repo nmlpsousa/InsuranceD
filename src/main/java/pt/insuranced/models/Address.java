@@ -3,7 +3,7 @@ package pt.insuranced.models;
 import pt.insuranced.sdk.enums.CountryEnum;
 
 public class Address {
-    private int id;
+    private Long id;
 
     private String addressLine1;
 
@@ -18,7 +18,7 @@ public class Address {
     public Address() {
     }
 
-    public Address(int id, String addressLine1, String addressLine2, String city, String postalCode, CountryEnum country) {
+    public Address(Long id, String addressLine1, String addressLine2, String city, String postalCode, CountryEnum country) {
         this.id = id;
         this.addressLine1 = addressLine1;
         this.addressLine2 = addressLine2;
@@ -67,7 +67,7 @@ public class Address {
         this.country = country;
     }
 
-    public int getId() {
+    public Long getId() {
         return this.id;
     }
 }

@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public abstract class AbstractUser {
-    private int id;
+    private Long id;
 
     private String username;
 
@@ -30,7 +30,8 @@ public abstract class AbstractUser {
     protected AbstractUser() {
     }
 
-    protected AbstractUser(int id, String username, Password password, PersonalIdentification personalIdentification, List<Password> oldPasswords, LocalDate lastPasswordChangeDate,
+    protected AbstractUser(Long id, String username, Password password, PersonalIdentification personalIdentification, List<Password> oldPasswords, LocalDate
+            lastPasswordChangeDate,
             UserTypeEnum userType, UserStatusEnum userStatus) {
         this.id = id;
         this.username = username;
@@ -100,7 +101,7 @@ public abstract class AbstractUser {
         this.userStatus = userStatus;
     }
 
-    public int getId() {
+    public Long getId() {
         return this.id;
     }
 

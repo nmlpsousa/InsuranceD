@@ -1,6 +1,5 @@
 package pt.insuranced.persistence.dao;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pt.insuranced.models.Address;
@@ -10,6 +9,9 @@ import pt.insuranced.models.PersonalIdentification;
 import pt.insuranced.models.PhoneNumber;
 import pt.insuranced.persistence.connection.ConnectionManager;
 import pt.insuranced.persistence.dao.sdk.interfaces.ClientDao;
+import pt.insuranced.sdk.enums.CountryEnum;
+import pt.insuranced.sdk.enums.UserStatusEnum;
+import pt.insuranced.sdk.enums.UserTypeEnum;
 import pt.insuranced.sdk.exceptions.InsuranceDException;
 
 import java.sql.Connection;
@@ -28,31 +30,83 @@ public class ClientDaoImpl implements ClientDao {
 
     @Override
     public Optional<Client> get(long userId) throws InsuranceDException {
-        String query = "select * from public.\"Users\" where \"Users\".id = " + userId + ';';
-        Client client = null;
+        String query =
+                "SELECT client.username, client.lastpasswordchangedate, personalidentification.firstname, personalidentification.lastname, personalidentification.dateofbirth, "
+                        + "personalidentification.identificationno, personalidentification.fiscalnumber, address.addressline1, address.addressline2, address.city, address"
+                        + ".postalcode, phonenumber.pref, phonenumber.num, usertype.id AS usertypeid, userstatus.id AS userstatusid, countries.abbreviation, client.id AS "
+                        + "clientid, personalidentification.id AS personalid, address.id AS addressid, phonenumber.id AS phonenumberid, countries.id AS countryid FROM public"
+                        + ".client, public.personalidentification, public.address, public.phonenumber, public.userstatus, public.usertype, public.countries WHERE client.statusid"
+                        + " = userstatus.id AND client.typeid = usertype.id AND client.personalid = personalidentification.id AND address.id = personalidentification.addressid "
+                        + "AND address.countryid = countries.id AND phonenumber.id = personalidentification.phonenumberid AND client.id = ?; ";
+        ResultSet resultSet = null;
 
         try (Connection connection = ConnectionManager.getConnection();
-                Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery(query)) {
+                PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setLong(1, userId);
+            resultSet = statement.executeQuery();
 
             if (!resultSet.next()) {
                 // No user found
                 return Optional.empty();
             }
 
-            System.out.println("Id: " + resultSet.getString("id") + ", Username: " + resultSet.getString("username"));
-            int id = resultSet.getInt("id");
             String username = resultSet.getString("username");
-            String password = resultSet.getString("password");
-            Password password1 = new Password(0, password);
-            int personalId = resultSet.getInt("personalId");
-            int typeId = resultSet.getInt("typeId");
-            client = new Client(id, username, password1, null, null, null, null, null, null);
+            LocalDate lastPasswordChangeDate = resultSet.getDate("lastpasswordchangedate").toLocalDate();
+            String firstName = resultSet.getString("firstname");
+            String lastName = resultSet.getString("lastname");
+            LocalDate dateOfBirth = resultSet.getDate("dateofbirth").toLocalDate();
+            String identificationNo = resultSet.getString("identificationno");
+            String fiscalNo = resultSet.getString("fiscalnumber");
+            String addressLine1 = resultSet.getString("addressline1");
+            String addressLine2 = resultSet.getString("addressline2");
+            String city = resultSet.getString("city");
+            String postalCode = resultSet.getString("postalcode");
+            String phonePrefix = resultSet.getString("pref");
+            Integer phoneNumber = resultSet.getInt("num");
+
+            Long clientId = resultSet.getLong("clientid");
+            Long personalIdentificationid = resultSet.getLong("personalid");
+            Long addressId = resultSet.getLong("addressid");
+            Long phoneNumberId = resultSet.getLong("phonenumberid");
+            Long countryId = resultSet.getLong("countryid");
+            Long userTypeId = resultSet.getLong("usertypeid");
+            Long userStatusId = resultSet.getLong("userstatusid");
+
+            UserTypeEnum userTypeEnum = UserTypeEnum.getTypeByCode(userTypeId);
+            UserStatusEnum userStatusEnum = UserStatusEnum.getStatusByCode(userStatusId);
+            CountryEnum countryEnum = CountryEnum.getCountryByCode(countryId);
+
+            Address address = new Address(addressId, addressLine1, addressLine2, city, postalCode, countryEnum);
+            PhoneNumber phoneNumber1 = new PhoneNumber(phoneNumberId, phonePrefix, phoneNumber);
+            // TODO Email is missing
+            PersonalIdentification personalIdentification = PersonalIdentification.Builder.newBuilder(personalIdentificationid)
+                    .setIdentificationNumber(identificationNo)
+                    .setAddress(address)
+                    .setDateOfBirth(dateOfBirth)
+                    .setFirstName(firstName)
+                    .setLastName(lastName)
+                    .setFiscalNumber(fiscalNo)
+                    .setPhoneNumber(phoneNumber1)
+                    .build();
+
+            Client client1 = new Client(clientId, username, null, personalIdentification, null, lastPasswordChangeDate, userTypeEnum, userStatusEnum, null);
+            return Optional.of(client1);
+
         } catch (SQLException e) {
-            System.out.println("Exception: " + e.getMessage());
-            System.out.println(ExceptionUtils.getStackTrace(e));
+            throw new InsuranceDException("Error retrieving client", e);
+        } finally {
+            if (resultSet != null) {
+                closeResultSet(resultSet);
+            }
         }
-        return Optional.ofNullable(client);
+    }
+
+    private static void closeResultSet(ResultSet resultSet) {
+        try {
+            resultSet.close();
+        } catch (SQLException e) {
+            LOGGER.error("Error while attempting to close ResultSet", e);
+        }
     }
 
     @Override
@@ -72,10 +126,9 @@ public class ClientDaoImpl implements ClientDao {
             throw new InsuranceDException("Error connecting with the database.", e);
         } finally {
             if (previousAutoCommit != null) {
-                restoreAutoCommitAndCloseConnection(connection, previousAutoCommit);
-            } else {
-                closeConnection(connection);
+                restoreAutoCommit(connection, previousAutoCommit);
             }
+            closeConnection(connection);
         }
         return null;
     }
@@ -122,10 +175,10 @@ public class ClientDaoImpl implements ClientDao {
                 .prepareStatement("INSERT INTO public.client( personalid, typeid, username, lastpasswordchangedate, statusid) VALUES(?, ?, ?, ?, ?); ",
                         Statement.RETURN_GENERATED_KEYS);
         preparedStatement.setLong(1, personalIdentificationId);
-        preparedStatement.setInt(2, client.getUserType().getCode());
+        preparedStatement.setLong(2, client.getUserType().getCode());
         preparedStatement.setString(3, client.getUsername());
         preparedStatement.setDate(4, Date.valueOf(LocalDate.now()));
-        preparedStatement.setInt(5, client.getUserStatus().getCode());
+        preparedStatement.setLong(5, client.getUserStatus().getCode());
 
         int generatedKeys = preparedStatement.executeUpdate();
         if (generatedKeys == 0) {
@@ -183,7 +236,7 @@ public class ClientDaoImpl implements ClientDao {
         statement.setString(2, address.getAddressLine2());
         statement.setString(3, address.getCity());
         statement.setString(4, address.getPostalCode());
-        statement.setInt(5, address.getCountry().getCode());
+        statement.setLong(5, address.getCountry().getCode());
 
         int generatedKeys = statement.executeUpdate();
         if (generatedKeys == 0) {
@@ -210,10 +263,9 @@ public class ClientDaoImpl implements ClientDao {
         }
     }
 
-    private static void restoreAutoCommitAndCloseConnection(Connection connection, Boolean previousAutoCommit) {
+    private static void restoreAutoCommit(Connection connection, Boolean previousAutoCommit) {
         try {
             connection.setAutoCommit(previousAutoCommit);
-            connection.close();
         } catch (SQLException e) {
             LOGGER.error("Error closing connection to the DB.", e);
         }
@@ -244,10 +296,9 @@ public class ClientDaoImpl implements ClientDao {
             throw new InsuranceDException("Error connecting with the database.", e);
         } finally {
             if (previousAutoCommit != null) {
-                restoreAutoCommitAndCloseConnection(connection, previousAutoCommit);
-            } else {
-                closeConnection(connection);
+                restoreAutoCommit(connection, previousAutoCommit);
             }
+            closeConnection(connection);
         }
     }
 }

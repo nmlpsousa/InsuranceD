@@ -36,7 +36,7 @@ public class PolicyService {
     public String getPoliciesFromUser(String jsonInput) throws InsuranceDException {
         try {
             Client client = OBJECT_MAPPER.readValue(jsonInput, Client.class);
-            int userId = client.getId();
+            Long userId = client.getId();
 
             List<Policy> policyList = this.policyDao.getPoliciesFromUser(userId);
             return OBJECT_MAPPER.writeValueAsString(policyList);

@@ -42,11 +42,11 @@ public class ClaimServiceTest {
             @Mock
             public Claim insert(Claim object) throws InsuranceDException {
                 return new Claim(1,
-                        1,
                         "Claim",
                         LocalDate.of(2017, 1, 30),
                         ClaimStatusEnum.DRAFT,
-                        new ReserveLine(1, "ReserveLine", 2000.0, 1000.0));
+                        new ReserveLine(1, "ReserveLine", 2000.0, 1000.0),
+                        1);
             }
         };
 
@@ -66,29 +66,29 @@ public class ClaimServiceTest {
                 
             	List<Claim> claimsList = new ArrayList<Claim>();
             	claimsList.add(new Claim(1,
-                        1,
                         "Claim",
                         LocalDate.of(2017, 1, 30),
                         ClaimStatusEnum.DRAFT,
-                        new ReserveLine(1, "ReserveLine", 2000.0, 1000.0)));
+                        new ReserveLine(1, "ReserveLine", 2000.0, 1000.0),
+                        1));
             	claimsList.add(new Claim(2,
-                        1,
                         "Claim",
                         LocalDate.of(2017, 2, 1),
                         ClaimStatusEnum.DRAFT,
-                        new ReserveLine(1, "ReserveLine", 2000.0, 1000.0)));
+                        new ReserveLine(1, "ReserveLine", 2000.0, 1000.0),
+                        2));
             	claimsList.add(new Claim(3,
-                        1,
                         "Claim",
                         LocalDate.of(2017, 1, 27),
                         ClaimStatusEnum.DRAFT,
-                        new ReserveLine(1, "ReserveLine", 2000.0, 1000.0)));
+                        new ReserveLine(1, "ReserveLine", 2000.0, 1000.0),
+                        3));
             	claimsList.add(new Claim(4,
-                        1,
                         "Claim",
                         LocalDate.of(2017, 1, 31),
                         ClaimStatusEnum.DRAFT,
-                        new ReserveLine(1, "ReserveLine", 2000.0, 1000.0)));
+                        new ReserveLine(1, "ReserveLine", 2000.0, 1000.0),
+                        4));
                 Collections.sort(claimsList, Claim.getCompByDate());
             	
                 return new ArrayList<Claim>(claimsList.subList(0, 2));
