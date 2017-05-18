@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -42,7 +43,7 @@ public class CoverageDaoImpl implements CoverageDao {
             
             String description = resultSet.getString("description");
             Long coverableId = resultSet.getLong("coverableid");
-            Double limit = resultSet.getDouble("limit");
+            Double limit = resultSet.getDouble("lim");
             Double premium = resultSet.getDouble("premium");
             
             Coverage.Builder builder = Coverage.Builder.newBuilder();
@@ -99,7 +100,7 @@ public class CoverageDaoImpl implements CoverageDao {
         return coverage;
     }
 
-    @Override
+	@Override
     public Coverage update(Coverage coverage) throws InsuranceDException {
     	Connection connection = null;
         Boolean previousAutoCommit = null;
@@ -125,8 +126,47 @@ public class CoverageDaoImpl implements CoverageDao {
         }
         return coverage;
     }
+	
+    private long insertCoverage(Connection connection, Coverage coverage) throws SQLException, InsuranceDException {
+    	PreparedStatement preparedStatement = connection.prepareStatement(
+    			"INSERT INTO public.coverage(coverableid, lim, premium, description) " + 
+    			"VALUES (?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
+    	
+    	preparedStatement.setLong(1, coverage.getCoverableId());
+    	preparedStatement.setDouble(2, coverage.getLimit());
+    	preparedStatement.setDouble(3, coverage.getPremium());
+    	preparedStatement.setString(4, coverage.getDescription());
+
+        int generatedKeys = preparedStatement.executeUpdate();
+        if (generatedKeys == 0) {
+            throw new InsuranceDException("Error inserting Coverage into the DB.");
+        }
+
+        preparedStatement.getGeneratedKeys().next();
+        return preparedStatement.getGeneratedKeys().getLong("id");
+	}
     
-    private static void rollbackConnection(Connection connection) {
+    private long updateCoverage(Connection connection, Coverage coverage) throws SQLException, InsuranceDException {
+    	PreparedStatement preparedStatement = connection.prepareStatement(
+    			"UPDATE public.coverage SET coverableid=?, lim=?, premium=?, description=? " + 
+    			"WHERE id=?;", Statement.RETURN_GENERATED_KEYS);
+    	
+    	preparedStatement.setLong(1, coverage.getCoverableId());
+    	preparedStatement.setDouble(2, coverage.getLimit());
+    	preparedStatement.setDouble(3, coverage.getPremium());
+    	preparedStatement.setString(4, coverage.getDescription());
+    	preparedStatement.setLong(5, coverage.getId());
+
+        int generatedKeys = preparedStatement.executeUpdate();
+        if (generatedKeys == 0) {
+            throw new InsuranceDException("Error updating Coverage into the DB.");
+        }
+
+        preparedStatement.getGeneratedKeys().next();
+        return preparedStatement.getGeneratedKeys().getLong("id");
+	}
+
+	private static void rollbackConnection(Connection connection) {
         try {
             connection.rollback();
         } catch (SQLException e) {
