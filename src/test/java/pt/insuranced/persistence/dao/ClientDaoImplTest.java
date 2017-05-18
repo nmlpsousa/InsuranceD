@@ -21,7 +21,7 @@ public class ClientDaoImplTest {
     @Ignore
     public void testGet() throws Exception {
         ClientDao clientDao = new ClientDaoImpl();
-        Optional<Client> clientOptional = clientDao.get(2L);
+        Optional<Client> clientOptional = clientDao.get(1L);
         clientOptional.ifPresent(System.out::println);
     }
 

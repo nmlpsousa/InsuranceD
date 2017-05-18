@@ -22,6 +22,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 public class ClientDaoImpl implements ClientDao {
@@ -31,13 +33,14 @@ public class ClientDaoImpl implements ClientDao {
     @Override
     public Optional<Client> get(long userId) throws InsuranceDException {
         String query =
-                "SELECT client.username, client.lastpasswordchangedate, personalidentification.firstname, personalidentification.lastname, personalidentification.dateofbirth, "
-                        + "personalidentification.identificationno, personalidentification.fiscalnumber, address.addressline1, address.addressline2, address.city, address"
-                        + ".postalcode, phonenumber.pref, phonenumber.num, usertype.id AS usertypeid, userstatus.id AS userstatusid, countries.abbreviation, client.id AS "
-                        + "clientid, personalidentification.id AS personalid, address.id AS addressid, phonenumber.id AS phonenumberid, countries.id AS countryid FROM public"
-                        + ".client, public.personalidentification, public.address, public.phonenumber, public.userstatus, public.usertype, public.countries WHERE client.statusid"
-                        + " = userstatus.id AND client.typeid = usertype.id AND client.personalid = personalidentification.id AND address.id = personalidentification.addressid "
-                        + "AND address.countryid = countries.id AND phonenumber.id = personalidentification.phonenumberid AND client.id = ?; ";
+                "SELECT usertype.id AS usertypeid, userstatus.id AS userstatusid, client.username, client.lastpasswordchangedate, client.id AS clientid, password.id AS "
+                        + "passwordid, password.isactive, password.password, personalidentification.id AS personalid, personalidentification.fiscalnumber, personalidentification"
+                        + ".identificationno, personalidentification.dateofbirth, personalidentification.lastname, personalidentification.firstname, address.addressline1, "
+                        + "address.addressline2, address.city, address.postalcode, address.id AS addressid, phonenumber.id AS phonenumberid, phonenumber.pref, phonenumber.num, "
+                        + "countries.id AS countryid FROM public.client, public.usertype, public.userstatus, public.personalidentification, public.address, public.phonenumber, "
+                        + "public.countries, public.password WHERE client.personalid = personalidentification.id AND usertype.id = client.typeid AND userstatus.id = client"
+                        + ".statusid AND personalidentification.addressid = address.id AND phonenumber.id = personalidentification.phonenumberid AND countries.id = address"
+                        + ".countryid AND password.userid = client.id AND password.isactive = TRUE AND client.id = ?; ";
         ResultSet resultSet = null;
 
         try (Connection connection = ConnectionManager.getConnection();
@@ -48,6 +51,25 @@ public class ClientDaoImpl implements ClientDao {
             if (!resultSet.next()) {
                 // No user found
                 return Optional.empty();
+            }
+
+            PreparedStatement passwordQueryStatement =
+                    connection.prepareStatement(
+                            "SELECT password.password, password.isactive, password.id AS passwordid, client.id AS clientid FROM public.client, public.password WHERE password"
+                                    + ".userid = client.id AND client.id = ?; ");
+            passwordQueryStatement.setLong(1, userId);
+
+            ResultSet passwordResults = passwordQueryStatement.executeQuery();
+            List<Password> oldPasswords = new LinkedList<>();
+            Password activePassword = null;
+            while (passwordResults.next()) {
+                Boolean isActive = passwordResults.getBoolean("isactive");
+                Password password = new Password(resultSet.getLong("passwordid"), resultSet.getString("password"));
+                if (isActive) {
+                    activePassword = password;
+                } else {
+                    oldPasswords.add(password);
+                }
             }
 
             String username = resultSet.getString("username");
@@ -89,7 +111,7 @@ public class ClientDaoImpl implements ClientDao {
                     .setPhoneNumber(phoneNumber1)
                     .build();
 
-            Client client1 = new Client(clientId, username, null, personalIdentification, null, lastPasswordChangeDate, userTypeEnum, userStatusEnum, null);
+            Client client1 = new Client(clientId, username, activePassword, personalIdentification, oldPasswords, lastPasswordChangeDate, userTypeEnum, userStatusEnum, null);
             return Optional.of(client1);
 
         } catch (SQLException e) {

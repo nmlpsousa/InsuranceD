@@ -8,7 +8,7 @@ import pt.insuranced.models.Client;
 import pt.insuranced.models.Password;
 import pt.insuranced.models.PersonalIdentification;
 import pt.insuranced.models.PhoneNumber;
-import pt.insuranced.persistence.dao.ClientDaoImpl;
+import pt.insuranced.persistence.dao.factory.ClientDaoFactory;
 import pt.insuranced.persistence.dao.sdk.interfaces.ClientDao;
 import pt.insuranced.sdk.enums.CountryEnum;
 import pt.insuranced.sdk.enums.UserStatusEnum;
@@ -61,7 +61,8 @@ public class FileImportService {
             List<Client> clientList = csvLines.stream()
                     .map(FileImportService::csvToClient)
                     .collect(Collectors.toList());
-            ClientDao clientDao = new ClientDaoImpl();
+            ClientDaoFactory clientDaoFactory = new ClientDaoFactory();
+            ClientDao clientDao = clientDaoFactory.getDao("POSTGRES");
             clientDao.bulkInsert(clientList);
         } catch (IOException | InsuranceDException e) {
             LOGGER.error("Error reading CSV file", e);
