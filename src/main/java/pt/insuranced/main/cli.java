@@ -113,7 +113,7 @@ public class cli {
             System.out.println(labels.getString("city"));
             newAddress.setCity(scanner.next());
             System.out.println(labels.getString("country"));
-            newAddress.setCountry(CountryEnum.getCountryByCode(scanner.nextInt()));
+            newAddress.setCountry(CountryEnum.getCountryByCode(scanner.nextLong()));
             System.out.println(labels.getString("postCode"));
             newAddress.setPostalCode(scanner.next());
             newPersonalId.setAddress(newAddress);
@@ -127,10 +127,10 @@ public class cli {
             newClient.setPersonalIdentification(newPersonalId);
             System.out.println(labels.getString("userStatusMenu"));
             System.out.println(labels.getString("selectOption"));
-            newClient.setUserStatus(UserStatusEnum.getStatusByCode(scanner.nextInt()));
+            newClient.setUserStatus(UserStatusEnum.getStatusByCode(scanner.nextLong()));
             System.out.println(labels.getString("userTypeMenu"));
             System.out.println(labels.getString("selectOption"));
-            newClient.setUserType(UserTypeEnum.getTypeByCode(scanner.nextInt()));
+            newClient.setUserType(UserTypeEnum.getTypeByCode(scanner.nextLong()));
             System.out.println("##########################################");
 
             System.out.println(labels.getString("clientDetails"));
