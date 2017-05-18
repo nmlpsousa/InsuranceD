@@ -1,11 +1,6 @@
 package pt.insuranced.persistence.dao;
 
-import pt.insuranced.models.Address;
 import pt.insuranced.models.Claim;
-import pt.insuranced.models.Coverage;
-import pt.insuranced.models.Password;
-import pt.insuranced.models.PersonalIdentification;
-import pt.insuranced.models.PhoneNumber;
 import pt.insuranced.models.ReserveLine;
 import pt.insuranced.persistence.connection.ConnectionManager;
 import pt.insuranced.persistence.dao.sdk.interfaces.ClaimDao;
