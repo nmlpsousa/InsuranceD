@@ -2,8 +2,6 @@ package pt.insuranced.persistence.dao;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import pt.insuranced.main.cli;
 import pt.insuranced.models.Address;
 import pt.insuranced.models.Client;
 import pt.insuranced.models.Password;
@@ -17,6 +15,7 @@ import pt.insuranced.sdk.enums.UserTypeEnum;
 import pt.insuranced.sdk.exceptions.InsuranceDException;
 import pt.insuranced.sdk.utils.EmailUtil;
 
+import javax.mail.Session;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -30,8 +29,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 
-import javax.mail.Session;
-
 public class ClientDaoImpl implements ClientDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ClientDaoImpl.class);
@@ -44,9 +41,9 @@ public class ClientDaoImpl implements ClientDao {
                         + ".identificationno, personalidentification.dateofbirth, personalidentification.lastname, personalidentification.firstname, address.addressline1, "
                         + "personalidentification.email, address.addressline2, address.city, address.postalcode, address.id AS addressid, phonenumber.id AS phonenumberid, "
                         + "phonenumber.pref, phonenumber.num, countries.id AS countryid " +
-                "FROM public.client, public.usertype, public.userstatus, public.personalidentification, public.address, public.phonenumber, "
+                        "FROM public.client, public.usertype, public.userstatus, public.personalidentification, public.address, public.phonenumber, "
                         + "public.countries, public.password " +
-                "WHERE client.personalid = personalidentification.id AND usertype.id = client.typeid AND userstatus.id = client"
+                        "WHERE client.personalid = personalidentification.id AND usertype.id = client.typeid AND userstatus.id = client"
                         + ".statusid AND personalidentification.addressid = address.id AND phonenumber.id = personalidentification.phonenumberid AND countries.id = address"
                         + ".countryid AND password.userid = client.id AND password.isactive = TRUE AND client.id = ?; ";
         ResultSet resultSet = null;
@@ -149,7 +146,7 @@ public class ClientDaoImpl implements ClientDao {
             previousAutoCommit = connection.getAutoCommit();
             connection.setAutoCommit(false);
 
-            prepareAndExecuteStatements(client, connection);
+            prepareAndExecuteInsertStatements(client, connection);
             sendEmail(client);
 
             connection.commit();
@@ -166,21 +163,21 @@ public class ClientDaoImpl implements ClientDao {
     }
 
     private void sendEmail(Client client) {
-    	
-    	LOGGER.debug("Sending email to client {}...", client.getUsername());
 
-	    String smtpHostServer = "ptsmtp.atrema.deloitte.com";
-	    
-	    Properties props = System.getProperties();
+        LOGGER.debug("Sending email to client {}...", client.getUsername());
 
-	    props.put("mail.smtp.host", smtpHostServer);
+        String smtpHostServer = "ptsmtp.atrema.deloitte.com";
 
-	    Session session = Session.getInstance(props, null);
+        Properties props = System.getProperties();
 
-	    EmailUtil.sendWelcomeEmail(session, client);
-	}
+        props.put("mail.smtp.host", smtpHostServer);
 
-	private void prepareAndExecuteStatements(Client client, Connection connection) throws SQLException, InsuranceDException {
+        Session session = Session.getInstance(props, null);
+
+        EmailUtil.sendWelcomeEmail(session, client);
+    }
+
+    private void prepareAndExecuteInsertStatements(Client client, Connection connection) throws SQLException, InsuranceDException {
         PersonalIdentification personalIdentification = client.getPersonalIdentification();
         PhoneNumber phoneNumber = personalIdentification.getPhoneNumber();
         Address address = personalIdentification.getAddress();
@@ -254,7 +251,7 @@ public class ClientDaoImpl implements ClientDao {
             InsuranceDException {
         PreparedStatement statement = connection.prepareStatement(
                 "INSERT INTO public.personalidentification( firstname, lastname, dateofbirth, addressid, identificationno, fiscalnumber, phonenumberid, email) " +
-                " VALUES(?, ?, ?, ?, ?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
+                        " VALUES(?, ?, ?, ?, ?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
 
         statement.setString(1, personalIdentification.getFirstName());
         statement.setString(2, personalIdentification.getLastName());
@@ -348,7 +345,7 @@ public class ClientDaoImpl implements ClientDao {
             int i = 0;
             for (Client client : clients) {
                 LOGGER.info("Inserting Client record {} of {}", ++i, clients.size());
-                prepareAndExecuteStatements(client, connection);
+                prepareAndExecuteInsertStatements(client, connection);
                 connection.commit();
             }
         } catch (SQLException e) {

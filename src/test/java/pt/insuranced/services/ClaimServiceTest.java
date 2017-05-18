@@ -2,7 +2,6 @@ package pt.insuranced.services;
 
 import mockit.Mock;
 import mockit.MockUp;
-
 import org.junit.Test;
 import pt.insuranced.models.Claim;
 import pt.insuranced.models.ReserveLine;
@@ -56,41 +55,41 @@ public class ClaimServiceTest {
 
         System.out.println(response);
     }
-    
+
     @Test
     public void testGetLastTwoClaimsForUser() throws InsuranceDException {
 
         new MockUp<ClaimDaoImpl>() {
             @Mock
             public List<Claim> getLastClaimsFromUser(int userId, int numberOfClaims) throws InsuranceDException {
-                
-            	List<Claim> claimsList = new ArrayList<Claim>();
-            	claimsList.add(new Claim(1,
+
+                List<Claim> claimsList = new ArrayList<Claim>();
+                claimsList.add(new Claim(1,
                         "Claim",
                         LocalDate.of(2017, 1, 30),
                         ClaimStatusEnum.DRAFT,
                         new ReserveLine(1, "ReserveLine", 2000.0, 1000.0),
                         1));
-            	claimsList.add(new Claim(2,
+                claimsList.add(new Claim(2,
                         "Claim",
                         LocalDate.of(2017, 2, 1),
                         ClaimStatusEnum.DRAFT,
                         new ReserveLine(1, "ReserveLine", 2000.0, 1000.0),
                         2));
-            	claimsList.add(new Claim(3,
+                claimsList.add(new Claim(3,
                         "Claim",
                         LocalDate.of(2017, 1, 27),
                         ClaimStatusEnum.DRAFT,
                         new ReserveLine(1, "ReserveLine", 2000.0, 1000.0),
                         3));
-            	claimsList.add(new Claim(4,
+                claimsList.add(new Claim(4,
                         "Claim",
                         LocalDate.of(2017, 1, 31),
                         ClaimStatusEnum.DRAFT,
                         new ReserveLine(1, "ReserveLine", 2000.0, 1000.0),
                         4));
                 Collections.sort(claimsList, Claim.getCompByDate());
-            	
+
                 return new ArrayList<Claim>(claimsList.subList(0, 2));
             }
         };

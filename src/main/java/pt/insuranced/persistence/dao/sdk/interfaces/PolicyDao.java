@@ -9,6 +9,7 @@ import java.util.Optional;
 public interface PolicyDao extends GenericDao<Policy> {
     /**
      * Returns a list of {@code Policy} from the provided user, without fields from other tables (such as Coverables or Coverages)
+     *
      * @param userId the user ID
      * @return a list of Policy objects
      * @throws InsuranceDException if an exception occurs while performing this action

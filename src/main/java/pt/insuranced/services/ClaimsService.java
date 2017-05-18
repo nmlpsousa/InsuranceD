@@ -3,7 +3,6 @@ package pt.insuranced.services;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
 import pt.insuranced.models.Claim;
 import pt.insuranced.persistence.dao.ClaimDaoImpl;
 import pt.insuranced.persistence.dao.sdk.interfaces.ClaimDao;
@@ -30,21 +29,21 @@ public class ClaimsService {
             throw new InsuranceDException("An error occurred while reporting a claim.", e);
         }
     }
-    
+
     //public List<Claim> getLastClaimsFromUser(int userId, int numberOfClaims)
     public String getLastClaimsFromUser(String jsonInput) throws InsuranceDException {
-    	
-    	try {
-    		
-    		ObjectMapper objectMapper = new ObjectMapper();
-    	
-    		ClaimDao claimDao = new ClaimDaoImpl();
-    		List<Claim> claimList = claimDao.getLastClaimsFromUser(0,0);
-        
-			return objectMapper.writeValueAsString(claimList);
-			
-		} catch (JsonProcessingException e) {
-			throw new InsuranceDException("An error occurred while reporting a claim.", e);
-		}
+
+        try {
+
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            ClaimDao claimDao = new ClaimDaoImpl();
+            List<Claim> claimList = claimDao.getLastClaimsFromUser(0, 0);
+
+            return objectMapper.writeValueAsString(claimList);
+
+        } catch (JsonProcessingException e) {
+            throw new InsuranceDException("An error occurred while reporting a claim.", e);
+        }
     }
 }

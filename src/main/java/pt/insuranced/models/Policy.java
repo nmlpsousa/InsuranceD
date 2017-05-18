@@ -22,7 +22,7 @@ public class Policy {
     }
 
     public Policy(long id, LocalDate startDate, LocalDate endDate, Double premium,
-    			  List<Coverable> coverableList, List<Coverage> coverageList, long userId) {
+            List<Coverable> coverableList, List<Coverage> coverageList, long userId) {
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -143,7 +143,7 @@ public class Policy {
 
         public Policy build() {
             return new Policy(this.id, this.startDate, this.endDate,
-            		          this.premium, this.coverableList, this.coverageList, this.userId);
+                    this.premium, this.coverableList, this.coverageList, this.userId);
         }
     }
 }
