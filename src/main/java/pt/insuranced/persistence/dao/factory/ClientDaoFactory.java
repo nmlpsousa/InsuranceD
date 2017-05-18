@@ -7,7 +7,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public class ClientDaoFactory implements AbstractDaoFactory {
     @Override
     public ClientDao getDao(String type) {
-        if ("POSTGRES".equals(type)) {
+        if ("postgres".equals(type)) {
             return new ClientDaoImpl();
         }
 

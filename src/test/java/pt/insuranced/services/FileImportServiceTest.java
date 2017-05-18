@@ -7,7 +7,7 @@ public class FileImportServiceTest {
     @Test
     @Ignore
     public void importClients() throws Exception {
-        FileImportService fileImportService = new FileImportService();
+        FileImportService fileImportService = new FileImportService("postgres");
 
         fileImportService.importClients("C:\\Workspace\\eclipse\\InsuranceD\\src\\main\\resources\\MOCK_DATA.csv");
     }

@@ -1,5 +1,6 @@
 package pt.insuranced.persistence.dao;
 
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import pt.insuranced.models.Address;
@@ -7,6 +8,7 @@ import pt.insuranced.models.Client;
 import pt.insuranced.models.Password;
 import pt.insuranced.models.PersonalIdentification;
 import pt.insuranced.models.PhoneNumber;
+import pt.insuranced.persistence.dao.factory.ClientDaoFactory;
 import pt.insuranced.persistence.dao.sdk.interfaces.ClientDao;
 import pt.insuranced.sdk.enums.CountryEnum;
 import pt.insuranced.sdk.enums.UserStatusEnum;
@@ -59,4 +61,21 @@ public class ClientDaoImplTest {
         clientDao.insert(client);
     }
 
+    @Test
+    @Ignore
+    public void testUpdate() throws Exception {
+        ClientDao clientDao = new ClientDaoFactory().getDao("postgres");
+
+        Optional<Client> clientOptional = clientDao.get(1L);
+        if (!clientOptional.isPresent()) {
+            Assert.fail();
+        }
+        Client client = clientOptional.get();
+        client.setUserStatus(UserStatusEnum.INACTIVE);
+
+        clientDao.update(client);
+
+        Optional<Client> updatedClientOpt = clientDao.get(1L);
+        Assert.assertEquals(UserStatusEnum.INACTIVE, updatedClientOpt.get().getUserStatus());
+    }
 }
