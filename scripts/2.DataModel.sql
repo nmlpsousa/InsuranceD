@@ -143,7 +143,6 @@ CREATE TABLE public.claim
 (
   id bigint NOT NULL DEFAULT nextval('claim_id_seq'::regclass),
   coverableid bigint,
-  claimno integer,
   description character varying,
   incidentdate date,
   claimstatusid bigint,
@@ -163,7 +162,6 @@ ALTER TABLE public.claim
 CREATE TABLE public.coverable
 (
   id bigint NOT NULL DEFAULT nextval('coverable_id_seq'::regclass),
-  coverableno integer,
   description character varying,
   policyid bigint,
   CONSTRAINT pk_coverable PRIMARY KEY (id)
@@ -200,7 +198,6 @@ ALTER TABLE public.coverage
 CREATE TABLE public.payment
 (
   id bigint NOT NULL DEFAULT nextval('payment_id_seq'::regclass),
-  paymentno integer,
   coverageid bigint,
   payee character varying,
   amount double precision,
