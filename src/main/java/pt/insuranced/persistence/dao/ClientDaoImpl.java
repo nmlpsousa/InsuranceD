@@ -320,7 +320,20 @@ public class ClientDaoImpl implements ClientDao {
 
     @Override
     public Client update(Client client) throws InsuranceDException {
-        return null;
+        try (Connection connection = ConnectionManager.getConnection();) {
+            PreparedStatement updateStatement =
+                    connection.prepareStatement("UPDATE public.client SET typeid=?, username=?, statusid=? WHERE client.id = ?; ");
+            updateStatement.setLong(1, client.getUserType().getCode());
+            updateStatement.setString(2, client.getUsername());
+            updateStatement.setLong(3, client.getUserStatus().getCode());
+            updateStatement.setLong(4, client.getId());
+
+            updateStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new InsuranceDException("Error connecting with the database.", e);
+        }
+        return client;
     }
 
     @Override

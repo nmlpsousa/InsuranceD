@@ -29,10 +29,32 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
+/**
+ * The type File import service.
+ */
 public class FileImportService {
 
+    private String daoType;
+
+    /**
+     * The constant LOGGER.
+     */
     private static final Logger LOGGER = LoggerFactory.getLogger(FileImportService.class);
 
+    /**
+     * Instantiates a new File Import service.
+     *
+     * @param daoType a String that defines the DAO type (e.g. "postgres")
+     */
+    public FileImportService(String daoType) {
+        this.daoType = daoType;
+    }
+
+    /**
+     * Imports clients from a CSV file into the Database
+     *
+     * @param csvPath the path to the CSV file
+     */
     public void importClients(String csvPath) {
         if (StringUtils.isBlank(csvPath)) {
             throw new IllegalArgumentException("The provided CSV path is invalid");
@@ -53,7 +75,12 @@ public class FileImportService {
         LOGGER.info("Finished");
     }
 
-    private static void bulkInsertClients(Path path) {
+    /**
+     * Bulk insert clients.
+     *
+     * @param path the path
+     */
+    private void bulkInsertClients(Path path) {
         try {
             List<String> csvLines = Files.readAllLines(path, Charset.defaultCharset());
             // First line is the header, ignore it
@@ -62,13 +89,19 @@ public class FileImportService {
                     .map(FileImportService::csvToClient)
                     .collect(Collectors.toList());
             ClientDaoFactory clientDaoFactory = new ClientDaoFactory();
-            ClientDao clientDao = clientDaoFactory.getDao("POSTGRES");
+            ClientDao clientDao = clientDaoFactory.getDao(this.daoType);
             clientDao.bulkInsert(clientList);
         } catch (IOException | InsuranceDException e) {
             LOGGER.error("Error reading CSV file", e);
         }
     }
 
+    /**
+     * Csv to client client.
+     *
+     * @param csv the csv
+     * @return the client
+     */
     private static Client csvToClient(String csv) {
         String[] values = csv.split(",");
         String firstName = values[0];
