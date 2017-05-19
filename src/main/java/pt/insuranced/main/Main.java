@@ -13,7 +13,7 @@ public class Main {
         do {
             System.out.println("Welcome Menu\n");
             System.out.println("-a New Client");
-            System.out.println("-b New Client");
+            System.out.println("-b Bulk Import Clients");
             System.out.println("-c Client Details");
             System.out.println("-d New Policy");
             System.out.println("-e Policy Details");
