@@ -55,14 +55,14 @@ public class FileImportService {
      *
      * @param csvPath the path to the CSV file
      */
-    public void importClients(String csvPath) throws InsuranceDException {
+    public int importClients(String csvPath) throws InsuranceDException {
         if (StringUtils.isBlank(csvPath)) {
             throw new IllegalArgumentException("The provided CSV path is invalid");
         }
 
         Path path = Paths.get(csvPath);
 
-        bulkInsertClients(path);
+        return bulkInsertClients(path);
     }
 
     /**
