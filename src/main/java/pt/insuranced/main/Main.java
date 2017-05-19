@@ -13,9 +13,10 @@ public class Main {
         do {
             System.out.println("Welcome Menu\n");
             System.out.println("-a New Client");
-            System.out.println("-b Client Details");
-            System.out.println("-c New Policy");
-            System.out.println("-d Policy Details");
+            System.out.println("-b New Client");
+            System.out.println("-c Client Details");
+            System.out.println("-d New Policy");
+            System.out.println("-e Policy Details");
             System.out.print("\nOption: ");
             s = scanner.next();
             String[] params = s.split(" ");

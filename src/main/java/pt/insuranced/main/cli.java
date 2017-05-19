@@ -12,10 +12,13 @@ import pt.insuranced.sdk.enums.CountryEnum;
 import pt.insuranced.sdk.enums.UserStatusEnum;
 import pt.insuranced.sdk.enums.UserTypeEnum;
 import pt.insuranced.sdk.exceptions.InsuranceDException;
+import pt.insuranced.services.FileImportService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by gcoutinho on 16-05-2017.
@@ -57,17 +60,17 @@ public class cli {
         //-- Create a new instance of OptionGroup (list of mutually exclusive options) class
         OptionGroup actionGroup = new OptionGroup();
 
-        options.addOption("a", false,"New Client");
-        options.addOption("b", false, "Client Details");
-        options.addOption("c", false, "New Policy");
-        options.addOption("d", false, "Policy Details");
+        options.addOption("a", false, "New Client");
+        options.addOption("b", false, "Import Clients");
+        options.addOption("c", false, "Client Details");
+        options.addOption("d", false, "New Policy");
+        options.addOption("e", false, "Policy Details");
 
         CommandLineParser parser = new DefaultParser();
 
         try {
             cmd = parser.parse(options, params);
-        }
-        catch (ParseException parseException) {
+        } catch (ParseException parseException) {
             //-- In case of parsing error print usage info
             new HelpFormatter().printHelp(("java ") + this.getClass().getName(), "", options, "\n" + parseException.getMessage(), true);
             return false;
@@ -76,46 +79,59 @@ public class cli {
     }
 
     /**
-     *  Illustrates typical activity of the application with respect to values fo parsed command-line arguments
+     * Illustrates typical activity of the application with respect to values fo parsed command-line arguments
      */
     private void doSomething() {
 
         /**
-        *  Option: New Client
-        */
-        if  (cmd.hasOption("a")){
+         *  Option: New Client
+         */
+        if (cmd.hasOption("a")) {
             newClient();
         }
 
         if (cmd.hasOption("b")) {
-            clientDetails();
+            importClients();
         }
 
         if (cmd.hasOption("c")) {
-            newPolicy();
+            clientDetails();
         }
 
         if (cmd.hasOption("d")) {
+            newPolicy();
+        }
+
+        if (cmd.hasOption("e")) {
             policyDetails();
         }
 
+    }
+
+    private void importClients() {
+        FileImportService file = new FileImportService("postgres");
+
+        System.out.print(labels.getString("csvPath"));
+        String path = scanner.next();
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.submit(() -> file.importClients(path));
+        executorService.shutdown();
     }
 
     private void policyDetails() {
         PolicyDao policyDao = new PolicyDaoImpl();
 
         try {
+            System.out.print(labels.getString("policyNo"));
             Optional<Policy> policyOptional = policyDao.get(scanner.nextLong());
             if (!policyOptional.isPresent()) {
                 System.out.println(labels.getString("policyNotFound"));
-            }
-            else {
+            } else {
                 Policy policy = policyOptional.get();
                 List<Coverage> coverageList = policy.getCoverageList();
 
                 System.out.println("\n" +
                         labels.getString("startDate") +
-                        policy.getStartDate()+
                         labels.getString("endDate") +
                         policy.getEndDate() +
                         labels.getString("clientID") +
@@ -146,8 +162,7 @@ public class cli {
             Optional<Client> clientOptional = clientDao.get(scanner.nextLong());
             if (!clientOptional.isPresent()) {
                 System.out.println(labels.getString("clientNotFound"));
-            }
-            else {
+            } else {
                 System.out.print("\n" +
                         labels.getString("userName") +
                         clientOptional.get().getUsername() +
@@ -317,7 +332,6 @@ public class cli {
     }
 
     /**
-     *
      * Accepts raw command-line arguments, validates them and invokes method to illustrate typical application activity.
      *
      * @param params raw command-line arguments as passed into main() method

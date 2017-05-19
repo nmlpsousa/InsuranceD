@@ -13,6 +13,7 @@ import pt.insuranced.persistence.dao.sdk.interfaces.ClientDao;
 import pt.insuranced.sdk.enums.CountryEnum;
 import pt.insuranced.sdk.enums.UserStatusEnum;
 import pt.insuranced.sdk.enums.UserTypeEnum;
+import pt.insuranced.sdk.exceptions.FileImportException;
 import pt.insuranced.sdk.exceptions.InsuranceDException;
 
 import java.io.IOException;
@@ -55,14 +56,19 @@ public class FileImportService {
      *
      * @param csvPath the path to the CSV file
      */
-    public int importClients(String csvPath) throws InsuranceDException {
+    public void importClients(String csvPath) {
         if (StringUtils.isBlank(csvPath)) {
             throw new IllegalArgumentException("The provided CSV path is invalid");
         }
 
         Path path = Paths.get(csvPath);
 
-        return bulkInsertClients(path);
+        try {
+            int numberOfClients = bulkInsertClients(path);
+            System.out.println("Inserted " + numberOfClients + " clients in the DB");
+        } catch (InsuranceDException e) {
+            System.out.println("Error occured while importing clients");
+        }
     }
 
     /**
@@ -70,7 +76,7 @@ public class FileImportService {
      *
      * @param path the path
      */
-    private int bulkInsertClients(Path path) {
+    private int bulkInsertClients(Path path) throws InsuranceDException {
         try {
             List<String> csvLines = Files.readAllLines(path, Charset.defaultCharset());
             // First line is the header, ignore it
@@ -84,10 +90,8 @@ public class FileImportService {
 
             return clientList.size();
         } catch (IOException | InsuranceDException e) {
-            LOGGER.error("Error reading CSV file", e);
+            throw new InsuranceDException("Error while importing clients", e);
         }
-
-        return -1;
     }
 
     /**
