@@ -29,7 +29,7 @@ public class ClientDaoImplTest {
     @Test
     public void testInsert() throws Exception {
         Client client = new Client();
-        client.setUsername("nsousa");
+        client.setUsername("guirodrigues");
 
         PersonalIdentification personalIdentification = new PersonalIdentification();
         Address address = new Address();
@@ -44,9 +44,9 @@ public class ClientDaoImplTest {
         personalIdentification.setAddress(address);
         personalIdentification.setPhoneNumber(phoneNumber);
         personalIdentification.setDateOfBirth(LocalDate.now());
-        personalIdentification.setFirstName("Nuno");
-        personalIdentification.setLastName("Sousa");
-        personalIdentification.setEmail("nsousa@deloitte.pt");
+        personalIdentification.setFirstName("Guilherme");
+        personalIdentification.setLastName("Rodrigues");
+        personalIdentification.setEmail("guirodrigues@deloitte.pt");
 
         Password password = new Password();
         password.setHashedPassword("password");
