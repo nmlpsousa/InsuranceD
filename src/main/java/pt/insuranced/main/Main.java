@@ -21,7 +21,7 @@ public class Main {
             s = scanner.next();
             String[] params = s.split(" ");
             new cli(params, scanner);
-        } while (!s.equals(0));
+        } while (!s.equals("0"));
 
     }
 }
