@@ -70,7 +70,7 @@ public class FileImportService {
      *
      * @param path the path
      */
-    private void bulkInsertClients(Path path) {
+    private int bulkInsertClients(Path path) {
         try {
             List<String> csvLines = Files.readAllLines(path, Charset.defaultCharset());
             // First line is the header, ignore it
@@ -81,9 +81,13 @@ public class FileImportService {
             ClientDaoFactory clientDaoFactory = new ClientDaoFactory();
             ClientDao clientDao = clientDaoFactory.getDao(this.daoType);
             clientDao.bulkInsert(clientList);
+
+            return clientList.size();
         } catch (IOException | InsuranceDException e) {
             LOGGER.error("Error reading CSV file", e);
         }
+
+        return -1;
     }
 
     /**
