@@ -55,7 +55,7 @@ public class FileImportService {
      *
      * @param csvPath the path to the CSV file
      */
-    public void importClients(String csvPath) {
+    public void importClients(String csvPath) throws InsuranceDException {
         if (StringUtils.isBlank(csvPath)) {
             throw new IllegalArgumentException("The provided CSV path is invalid");
         }
@@ -69,7 +69,7 @@ public class FileImportService {
         try {
             future.get();
         } catch (InterruptedException | ExecutionException e) {
-            LOGGER.error("Error reading CSV file", e);
+            throw new InsuranceDException("An error occured while importing clients", e);
         }
 
         LOGGER.info("Finished");
