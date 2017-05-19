@@ -62,17 +62,7 @@ public class FileImportService {
 
         Path path = Paths.get(csvPath);
 
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        Future<?> future = executorService.submit(() -> bulkInsertClients(path));
-
-        LOGGER.info("Doing something in background");
-        try {
-            future.get();
-        } catch (InterruptedException | ExecutionException e) {
-            throw new InsuranceDException("An error occured while importing clients", e);
-        }
-
-        LOGGER.info("Finished");
+        bulkInsertClients(path);
     }
 
     /**
